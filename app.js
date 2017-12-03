@@ -35,4 +35,4 @@ app.get('/message', function(req, res){
        res.render('base.html', {pageToGet: 'message'});
 });
 
-app.listen(7000);
+app.listen(3000);
