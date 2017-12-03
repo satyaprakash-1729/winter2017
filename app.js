@@ -35,4 +35,4 @@ app.get('/message', function(req, res){
        res.render('base.html', {pageToGet: 'message'});
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
