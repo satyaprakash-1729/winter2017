@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn">
+
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+    #ic1 {
+      position: relative;
+      left: 0px;
+      float: left;
+      top: -5px;
+      margin-right: 10px;
+      -webkit-filter: invert(1);
+      filter: invert(1);
+    }
+    .navbar-brand {
+      font-family: 'Vollkorn', 'Arial';
+      display: inline-block;
+      width: 250px;
+    }
+    .brand-name {
+      position: relative;
+      top: -7px;
+    }
+    #pic1 {
+      padding: 10px;
+      width: 400px;
+    }
+    #pic2 {
+      margin-left: 110px;
+      padding: 10px;
+      width: 420px;
+      height: 287px;
+    }
+    .footer-disc {
+      size: 8px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#"><img id="ic1" src="/images/police.png" height="30px" width="30px"><span class="brand-name">Amingaon Police Station</p></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="/message">Post A Message</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+    <div class="table-responsive table-hover">
+    <table class="table" id="sidebar">
+    <thead>
+      <tr>
+        <th><center>How can we help ?</center></th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr><td><a id="home-tab" href="#">Home</a></td></tr>
+      <tr><td><a id="enq-tab" href="#">Registered Case Enquiry</a></td></tr>
+      <tr><td><a id="report-tab" href="#">Report Crime</a></td></tr>
+      <tr><td><a id="past-tab" href="#">See Past Records</a></td></tr>
+      <tr><td><a id="chart-tab" href="#">Organizational Chart</a></td></tr>
+      <tr><td><a id="info-tab" href="#">Police Stations Info</a></td></tr>
+      <tr><td><a id="complaints-tab" href="#">Book Complaint</a></td></tr>
+      <tr><td><a id="missing-tab" href="#">Missing Persons Record</a></td></tr>
+    </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="col-sm-8 text-left"> 
+      <div class="all-contents"></div>
+    </div>
+    <div class="col-sm-2 sidenav">
+      <div class="well">
+        <p>NEWS 1</p>
+      </div>
+      <div class="well">
+        <p>NEWS 2</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid footer-disc">
+  <p>Discalimer: This website is maintained and updated by Amingaon Police Station and associate developers. No police official is responsible for any mistakes or outdated data on the page.</p>
+</footer>
+
+</body>
+</html>
+
+<script type="text/javascript">
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    vars[key] = value;
+    });
+    return vars;
+}
+  window.onload = function(){
+    var vars = getUrlVars();
+    if(!("page" in vars)){
+        $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'></div><div class='col-sm-4'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'></div>");
+    }else{
+        $( "div.all-contents" ).load("views/"+vars['page']+".html");
+    }
+  }
+  $( "#enq-tab" ).click(function(){
+    $( "div.all-contents" ).load("views/enquiry.html");
+  });
+  $( "#report-tab" ).click(function(){
+    $( "div.all-contents" ).load("views/reports.html");
+  });
+  $( "#past-tab" ).click(function(){
+    $( "div.all-contents" ).html("<h2>Past</h2>");
+  });
+  $( "#home-tab" ).click(function(){
+    $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'></div><div class='col-sm-4'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'></div>");
+  });
+  $( "#chart-tab" ).click(function(){
+    $( "div.all-contents" ).html("<h2>Organizational Chart</h2>");
+  });
+  $( "#info-tab" ).click(function(){
+    $( "div.all-contents" ).html("<h2>Police Station Info</h2>");
+  });
+  $( "#complaints-tab" ).click(function(){
+    $( "div.all-contents" ).html("<h2>Complaints</h2>");
+  });
+  $( "#missing-tab" ).click(function(){
+    $( "div.all-contents" ).html("<h2>Missing Persons</h2>");
+  });
+  $(".navbar-brand").hover(function(){
+        // console.log("Hererererer");
+        $(this).animate({fontSize: '22px', color: '#006699'}, 200);
+    }, function(){
+        $(this).animate({fontSize: '18px', color: '#9d9d9d'}, 200);
+    });
+  $( "#sidebar a" ).hover(function(){
+        // console.log("Hererererer");
+        $(this).stop(true, true).animate({fontSize: '18px', color: '#006699'}, 300);
+    }, function(){
+        $(this).stop(true, true).animate({fontSize: '14px', color: '#337ab7'}, 300);
+    });
+</script>

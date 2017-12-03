@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+       .enquiry {
+              margin-top: 20px;
+       }
+       #doc1 {
+            margin-left: 30px;
+       }
+       #dor1 {
+            margin-left: 30px;
+       }
+       label {
+            float: left;
+            padding-right: 10px;
+       }
+</style>
+</head>
+<body>
+<div class="enquiry">
+<div class="panel panel-info">
+       <div class="panel-heading">Enter Report Details . . .</div>
+       <div class="panel-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="name">Your Name: </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="report-name" placeholder="Enter Name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="report-topic">Topic: </label>
+                  <div class="col-sm-10"> 
+                    <input type="text" class="form-control" id="report-topic" placeholder="Enter Topic">
+                  </div>
+                </div>
+                <!--  -->
+
+                <div class="form-group" id="dor1">
+                <label class="control-label" for="datepicker">Date Of Report: </label>
+                   <div class="input-group">
+                    <input type="text" class="form-control" id="datepicker" name="dor">
+                   </div>
+                 </div>
+
+                 <div class="form-group" id="doc1">
+                <label class="control-label" for="datepicker">Date Of Crime: </label>
+                   <div class="input-group">
+                    <input type="text" class="form-control" id="datepicker1" name="doc">
+                   </div>
+                 </div>
+
+                 <div class="form-group">
+                  <label class="control-label col-sm-2" for="report-content">Describe The Crime:</label>
+                  <div class="col-sm-10"> 
+                    <textarea class="form-control" rows="5" name="contents" id="report-content"></textarea>
+                  </div>
+                </div>
+
+                <!--  -->
+                <div class="form-group"> 
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+
+              </form>
+              </div>
+       </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+        $( "#datepicker" ).datepicker({
+            format: 'yy-mm-dd',
+            todayHighlight: true,
+            showOn: "both",
+            autoclose: true,
+        });
+        $( "#datepicker1" ).datepicker({
+            format: 'yy-mm-dd',
+            todayHighlight: true,
+            showOn: "both",
+            autoclose: true,
+        });
+</script>

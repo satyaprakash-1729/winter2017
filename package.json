@@ -1,0 +1,19 @@
+{
+  "name": "practiceweb",
+  "version": "1.0.0",
+  "description": "For Police Proj",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Satya Prakash (s)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "url": "^0.11.0"
+  }
+}
