@@ -76,6 +76,16 @@
       size: 8px;
       text-align: right;
     }
+    footer {
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      width: 83%;
+      height: 50px;
+      font-size: 80%;
+      text-align: right;
+    }
+
   </style>
 </head>
 <body>
@@ -93,12 +103,38 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
+        <li><a href="/chat">Chat Room</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="#">Post A Message</a></li>
         <li><a href="#">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+        <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li> -->
+        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="30px" width="30px" id="editpic">Change Profile Picture<span class="caret"></span></a>
+                <ul id="profiledp" class="dropdown-menu">
+                    <li>
+                         <div class="row11 row">
+                                <div class="col-md-12">
+                                     <form class="form" role="form" method="post" action="/picchange" encType="multipart/form-data" accept-charset="UTF-8" id="pic-nav">
+                                            <div class="form-group">
+                                                  <label class="control-label col-md-4" for="profilePicAddr">Pic Address:</label>
+                                                 <input type="url" class="form-control col-md-8" id="profilePicAddr" placeholder="Address" name="profilePicAddr">
+                                            </div>
+                                            <div class="form-group">
+                                                 <label class="control-label col-md-4" for="profilePicUpload">Pic File Upload:</label>
+                                                 <input type="file" name="profilePicUpload" id="profilePicUpload" />
+                                            </div>
+                                            <input type="hidden" id="userID" name="userID" value="<%= row.userID %>">
+                                            <div class="form-group">
+                                                 <button type="submit" class="btn btn-primary btn1 col-sm-8">Change</button>
+                                            </div>
+                                     </form>
+                                </div>
+                         </div>
+                    </li>
+                </ul>
+            </li>
       </ul>
     </div>
   </div>
@@ -116,12 +152,9 @@
     </thead>
     <tbody>
     <tr><td><a id="home-tab" href="/home">Home</a></td></tr>
-      <tr><td><a id="enq-tab" href="/home?page=enquiry">Registered Case Enquiry</a></td></tr>
-      <tr><td><a id="report-tab" href="/home?page=reports">Report Crime</a></td></tr>
       <tr><td><a id="past-tab" href="/home?page=past">See Past Records</a></td></tr>
       <tr><td><a id="chart-tab" href="/home?page=chart">Organizational Chart</a></td></tr>
       <tr><td><a id="info-tab" href="/home?page=info">Police Stations Info</a></td></tr>
-      <tr><td><a id="complaints-tab" href="/home?page=complaint">Book Complaint</a></td></tr>
       <tr><td><a id="missing-tab" href="/home?page=missing">Missing Persons Record</a></td></tr>
     </tbody>
       </table>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+       <title></title>
+       <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+</head>
+<style type="text/css">
+       .container {
+              font-family: 'Teko';
+       }
+</style>
+<body>
+<div class="container">
+  <h3>Chat Room</h3>
+  <button type="button" class="btn btn-danger" onclick="collapseAll()" id="butColl">Toggle All Chats</button>
+    <div id="msgHistory">
+    </div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+       // $(document).ready(function() {
+       //      setInterval("ajaxd()",1000);
+       //      setInterval("updater()", 1000);
+       //  });
+       // function updater(){
+       //      $.ajax({
+       //         method: "GET",
+       //         url: "updatechat",
+       //         data: {userId: userId},
+       //         success: function(data){
+       //              Tdata = JSON.parse(data);
+       //         }
+       //     });
+       //  }
+       //  function ajaxd() {
+       //      console.log(Tdata);
+       //      var toUpdate = Tdata.message;
+       //       if(toUpdate=="yes" || update1==true){
+       //        $.ajax({
+       //         type: "GET",
+       //         url: "chatHis.php",
+       //         data: {userId: userId, email: email},
+       //         success: function(data){
+       //           // $(data).appendTo("#msgHistory");
+       //           $("#msgHistory").html($(data));
+       //           $('.collapse').collapse('show');
+       //         }
+       //       });
+       //        update1 = false;
+       //        toUpdate = "no";
+       //    }
+       //  }
+</script>

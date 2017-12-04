@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Administration</title>
+    <link rel="icon" 
+      type="image/png" 
+      href="/images/title.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=0.3"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <style type="text/css">
+        #whole {
+            width: 100%;
+            height: 1000px;
+        }
+        #logout {
+            float: right;
+            margin-top: 4px;
+            margin-right: 5px;
+        }
+        #welcome {
+            float: left;
+            width: 1100px;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="panel panel-primary" id="whole">
+        <div class="panel-heading">Administration Page</div>
+        <div class="panel-body">
+            <div class="panel panel-info" id="welcome"><div class="panel-heading">Welcome, Satya Prakash. Choose a task or logout if you're done.</div></div>
+            <form action="/logout" method="POST">
+            <button type="submit" class="btn btn-info" id="logout">Logout</button>
+            </form>
+            <hr width="100%">
+            <ul class="nav nav-tabs">
+              <li class="allmsg"><a data-toggle="tab" href="#home">View All Users List</a></li>
+              <li><a data-toggle="tab" href="#menu1">Add Users To Network</a></li>
+              <li><a data-toggle="tab" href="#menu2">Remove Users</a></li>
+            </ul>
+            <script type="text/javascript">
+                var data = <%-JSON.stringify(users)%>;
+                console.log("-->>>" + data);
+            </script>
+            <div class="tab-content">
+              <div id="home" class="tab-pane fade in active">
+                <h3>All Users List</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <th>User Id</th>
+                        <th>IP Address</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Designation</th>
+                        <th>Station</th>
+                    </thead>
+                    <!-- <h3></h3> -->
+                    <tbody>
+                    <% for(var i=0; i<users.length; i++) {%>
+                       <tr>
+                         <td>
+                           <%= users[i].userID %>
+                         </td>
+                         <td>
+                           <%= users[i].ipAddr %>
+                         </td>
+                         <td>
+                           <%= users[i].name %>
+                         </td>
+                         <td>
+                           <%= users[i].email %>
+                         </td>
+                         <td>
+                           <%= users[i].contact %>
+                         </td>
+                         <td>
+                           <%= users[i].designation %>
+                         </td>
+                         <td>
+                           <%= users[i].station %>
+                         </td>
+                       </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+              </div>
+              <div id="menu1" class="tab-pane fade">
+                <h3>Add User To Network</h3>
+                
+<!-- //////////////////////////////////////////////////////////////////////////////////////// -->
+
+<div class="panel panel-info">
+       <div class="panel-heading">Add User . . .</div>
+       <div class="panel-body">
+              <form class="form-horizontal" action="/adduser" method="POST">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="user_name">User's Name: </label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Enter User's Name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="email">User's Email: </label>
+                  <div class="col-sm-10"> 
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email">
+                  </div>
+                </div>
+                <!--  -->
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="userID">User ID: </label>
+                  <div class="col-sm-10"> 
+                    <input type="text" class="form-control" id="userID" name="userID" placeholder="Enter User's Id">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="contact">User's Contact: </label>
+                  <div class="col-sm-10"> 
+                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter User's Contact">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="designation">User's Designation: </label>
+                  <div class="col-sm-10"> 
+                    <input type="text" class="form-control" id="designation" name="designation" placeholder="Enter User's Designation">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="ipaddr">User's IP Address: </label>
+                  <div class="col-sm-10"> 
+                    <input type="text" class="form-control" id="ipaddr" name="ipaddr" placeholder="Enter User's IP Address">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="station">User's Station: </label>
+                  <div class="col-sm-10"> 
+                    <input type="text" class="form-control" id="station" name="station" placeholder="Enter User's Station">
+                  </div>
+                </div>
+
+                <!--  -->
+                <div class="form-group"> 
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary" id="adduser" name="adduser">Add User</button>
+                  </div>
+                </div>
+
+              </form>
+              </div>
+       </div>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+              </div>
+              <div id="menu2" class="tab-pane fade">
+                <h3>Remove</h3>
+                
+              </div>
+            </div>
+        </div>
+        </div>          
+    </body>
+    </html>

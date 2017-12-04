@@ -53,6 +53,12 @@
       -webkit-filter: invert(1);
       filter: invert(1);
     }
+
+    #editpic {
+      -webkit-filter: invert(1);
+      filter: invert(1);
+    }
+
     .navbar-brand {
       font-family: 'Vollkorn', 'Arial';
       display: inline-block;
@@ -72,10 +78,274 @@
       width: 420px;
       height: 287px;
     }
-    .footer-disc {
-      size: 8px;
+
+    footer {
+      position: fixed;
+      bottom: 0px;
+      right: 0px;
+      width: 83%;
+      height: 50px;
+      font-size: 80%;
       text-align: right;
     }
+
+.card {
+    padding-top: 20px;
+    margin: 10px 0 20px 0;
+    background-color: rgba(214, 224, 226, 0.2);
+    border-top-width: 0;
+    border-bottom-width: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card .card-heading {
+    padding: 0 20px;
+    margin: 0;
+}
+
+.card .card-heading.simple {
+    font-size: 20px;
+    font-weight: 300;
+    color: #777;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.card .card-heading.image img {
+    display: inline-block;
+    width: 46px;
+    height: 46px;
+    margin-right: 15px;
+    vertical-align: top;
+    border: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.card .card-heading.image .card-heading-header {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.card .card-heading.image .card-heading-header h3 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+    color: #262626;
+}
+
+.card .card-heading.image .card-heading-header span {
+    font-size: 12px;
+    color: #999999;
+}
+
+.card .card-body {
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.card .card-media {
+    padding: 0 20px;
+    margin: 0 -14px;
+}
+
+.card .card-media img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.card .card-actions {
+    min-height: 30px;
+    padding: 0 20px 20px 20px;
+    margin: 20px 0 0 0;
+}
+
+.card .card-comments {
+    padding: 20px;
+    margin: 0;
+    background-color: #f8f8f8;
+}
+
+.card .card-comments .comments-collapse-toggle {
+    padding: 0;
+    margin: 0 20px 12px 20px;
+}
+
+.card .card-comments .comments-collapse-toggle a,
+.card .card-comments .comments-collapse-toggle span {
+    padding-right: 5px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #999;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-comments .media-heading {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.card.people {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    padding-top: 0;
+    margin-left: 20px;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.card.people:first-child {
+    margin-left: 0;
+}
+
+.card.people .card-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 100px;
+    height: 150px;
+    background-color: #ffffff;
+}
+
+.card.people .card-top.green {
+    background-color: #53a93f;
+}
+
+.card.people .card-top.blue {
+    background-color: #427fed;
+}
+
+.card.people .card-info {
+    position: absolute;
+    top: 150px;
+    display: inline-block;
+    width: 100%;
+    height: 101px;
+    overflow: hidden;
+    background: #ffffff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card.people .card-info .title {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #404040;
+}
+
+.card.people .card-info .desc {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 16px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.people .card-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    line-height: 29px;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgba(214, 224, 226, 0.2);
+}
+
+.card.hovercard .cardheader {
+    background: url("http://lorempixel.com/850/280/nature/4/");
+    background-size: cover;
+    height: 135px;
+}
+
+.card.hovercard .avatar {
+    position: relative;
+    top: -50px;
+    margin-bottom: -50px;
+}
+
+.card.hovercard .avatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.5);
+}
+
+.card.hovercard .info {
+    padding: 4px 8px 10px;
+}
+
+.card.hovercard .info .title {
+    margin-bottom: 4px;
+    font-size: 24px;
+    line-height: 1;
+    color: #262626;
+    vertical-align: middle;
+}
+
+.card.hovercard .info .desc {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+
+.container1 {
+  width: 700px;
+}
+.row1 {
+  width: 700px;
+}
+.btn1 {
+  width: 100px;
+}
+#profiledp {
+  width: 500px;
+  height: 200px;
+}
+
+.btn2{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
+
   </style>
 </head>
 <body>
@@ -93,12 +363,39 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Home</a></li>
+        <li><a href="/chat">Chat Room</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="/message">Post A Message</a></li>
         <li><a href="#">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+        <!-- <li><a href="#"><img src="images/edit.png" height="30px" width="30px" id="editpic">Edit Profile Pic</a></li> -->
+        <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li> -->
+        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="30px" width="30px" id="editpic">Change Profile Picture<span class="caret"></span></a>
+                <ul id="profiledp" class="dropdown-menu">
+                    <li>
+                         <div class="row11 row">
+                                <div class="col-md-12">
+                                     <form class="form" role="form" method="post" action="/picchange" encType="multipart/form-data" accept-charset="UTF-8" id="pic-nav">
+                                            <div class="form-group">
+                                                  <label class="control-label col-md-4" for="profilePicAddr">Pic Address:</label>
+                                                 <input type="url" class="form-control col-md-8" id="profilePicAddr" placeholder="Address" name="profilePicAddr">
+                                            </div>
+                                            <div class="form-group">
+                                                 <label class="control-label col-md-4" for="profilePicUpload">Pic File Upload:</label>
+                                                 <input type="file" name="profilePicUpload" id="profilePicUpload" />
+                                            </div>
+                                            <input type="hidden" id="userID" name="userID" value="<%= row.userID %>">
+                                            <div class="form-group">
+                                                 <button type="submit" class="btn btn-primary btn1 col-sm-8">Change</button>
+                                            </div>
+                                     </form>
+                                </div>
+                         </div>
+                    </li>
+                </ul>
+            </li>
       </ul>
     </div>
   </div>
@@ -115,13 +412,54 @@
       </tr>
     </thead>
     <tbody>
+    <tr>
+      
+<!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
+
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container1">
+  <div class="row1">
+    <div class="col-lg-3 col-sm-6">
+
+            <div class="card hovercard">
+                <div class="cardheader">
+
+                </div>
+                <div class="avatar">
+                    
+                </div>
+                <div class="info">
+                    <div class="title">
+                        <div id="name_put"></div>
+                    </div>
+                    <div class="desc" id="designation_put"></div>
+                    <div class="desc" id="station_put"></div>
+                    <div class="desc" id="email_put"></div>
+                </div>
+                <div class="bottom">
+                    <a class="btn btn-primary btn-twitter btn-sm btn2" href="https://twitter.com/webmaniac">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="btn btn-danger btn-sm btn2" rel="publisher"
+                       href="https://plus.google.com/+ahmshahnuralam">
+                        <i class="fa fa-google-plus"></i>
+                    </a>
+                    <a class="btn btn-primary btn-sm btn2" rel="publisher"
+                       href="https://plus.google.com/shahnuralam">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    </tr>
     <tr><td><a id="home-tab" href="#">Home</a></td></tr>
-      <tr><td><a id="enq-tab" href="#">Registered Case Enquiry</a></td></tr>
-      <tr><td><a id="report-tab" href="#">Report Crime</a></td></tr>
       <tr><td><a id="past-tab" href="#">See Past Records</a></td></tr>
       <tr><td><a id="chart-tab" href="#">Organizational Chart</a></td></tr>
       <tr><td><a id="info-tab" href="#">Police Stations Info</a></td></tr>
-      <tr><td><a id="complaints-tab" href="#">Book Complaint</a></td></tr>
       <tr><td><a id="missing-tab" href="#">Missing Persons Record</a></td></tr>
     </tbody>
       </table>
@@ -157,6 +495,15 @@ function getUrlVars() {
     return vars;
 }
   window.onload = function(){
+    var rowVar = <%- JSON.stringify(row) %>;
+var filenameFull = <%- JSON.stringify(filenameFull) %>;
+  console.log('<img alt="" src="images/profilePics/'+filenameFull+'">');
+    $( ".avatar" ).html('<img alt="" src="images/profilePics/'+filenameFull+'">');
+
+    $( "#name_put" ).html("<b>"+rowVar.name+"</b>");
+    $( "#email_put" ).html("<b>"+rowVar.email+"</b>");
+    $( "#designation_put" ).html("<b>"+rowVar.designation+"</b>");
+    $( "#station_put" ).html("<b>"+rowVar.station+"</b>");
     var vars = getUrlVars();
     if(!("page" in vars)){
         $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'></div><div class='col-sm-4'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'></div>");
