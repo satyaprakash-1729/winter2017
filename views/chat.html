@@ -20,10 +20,12 @@
 </html>
 
 <script type="text/javascript">
-       // $(document).ready(function() {
-       //      setInterval("ajaxd()",1000);
-       //      setInterval("updater()", 1000);
-       //  });
+       $(document).ready(function() {
+              var rowVar = <%- JSON.stringify(row) %>;
+              console.log(">>>>" + rowVar);
+            // setInterval("ajaxd()",1000);
+            // setInterval("updater()", 1000);
+        });
        // function updater(){
        //      $.ajax({
        //         method: "GET",

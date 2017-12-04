@@ -43,7 +43,7 @@ var connection = mysql.createConnection({
     password: 'hamunaptra',
     database: 'polproj100'
 });
-var admin = {username: "mathayus1729", password: "H@mun@ptr@1729"};
+var admin = {username: "mathayus1729", password: "PolProj@1729"};
 
 app.get('/admin', function(req, res){
     // console.log("SAFASFAS");
