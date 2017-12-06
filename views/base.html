@@ -1,32 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Police Station Intranet</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn">
 
-  <style>
+<style>
+  @font-face {
+      font-family: 'Roboto-Bold';
+      src: url('fonts/roboto/Roboto-Bold.woff2') format('woff2'), /* Super Modern Browsers */
+           url('fonts/roboto/Roboto-Bold.woff') format('woff'); /* Legacy iOS */
+    }
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
     }
-    
+    nav ul a {
+      font-size: 14px;
+    }
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 450px}
     
     /* Set gray background color and 100% height */
     .sidenav {
+        font-family: 'Roboto-Bold';
+        font-weight: bold;
+        font-size: 16px;
       padding-top: 20px;
-      background-color: #f1f1f1;
-      height: 100%;
+      background-color: #ffcdd2;
+      height: 700px;
+      overflow: auto;
     }
     
     /* Set black background color, white text and some padding */
@@ -53,6 +65,12 @@
       -webkit-filter: invert(1);
       filter: invert(1);
     }
+
+    #editpic {
+      -webkit-filter: invert(1);
+      filter: invert(1);
+    }
+
     .navbar-brand {
       font-family: 'Vollkorn', 'Arial';
       display: inline-block;
@@ -63,28 +81,294 @@
       top: -7px;
     }
     #pic1 {
-      padding: 10px;
-      width: 400px;
+      max-height: 100%;
+      max-width: 100%;
     }
     #pic2 {
-      margin-left: 110px;
-      padding: 10px;
-      width: 420px;
-      height: 287px;
+      max-height: 100%;
+      max-width: 100%;
     }
-    .footer-disc {
-      size: 8px;
-      text-align: right;
-    }
-    footer {
-      position: fixed;
-      bottom: 0px;
-      right: 0px;
-      width: 83%;
-      height: 50px;
-      font-size: 80%;
-      text-align: right;
-    }
+
+.mycard {
+    padding-top: 20px;
+    margin: 10px 0 20px 0;
+    background-color: rgba(214, 224, 226, 0.2);
+    border-top-width: 0;
+    border-bottom-width: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.mycard .mycard-heading {
+    padding: 0 20px;
+    margin: 0;
+}
+
+.mycard .mycard-heading.simple {
+    font-size: 20px;
+    font-weight: 300;
+    color: #777;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.mycard .mycard-heading.image img {
+    display: inline-block;
+    width: 46px;
+    height: 46px;
+    margin-right: 15px;
+    vertical-align: top;
+    border: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.mycard .mycard-heading.image .mycard-heading-header {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.mycard .mycard-heading.image .mycard-heading-header h3 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+    color: #262626;
+}
+
+.mycard .mycard-heading.image .mycard-heading-header span {
+    font-size: 12px;
+    color: #999999;
+}
+
+.mycard .mycard-body {
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.mycard .mycard-media {
+    padding: 0 20px;
+    margin: 0 -14px;
+}
+
+.mycard .mycard-media img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.mycard .mycard-actions {
+    min-height: 30px;
+    padding: 0 20px 20px 20px;
+    margin: 20px 0 0 0;
+}
+
+.mycard .mycard-comments {
+    padding: 20px;
+    margin: 0;
+    background-color: #f8f8f8;
+}
+
+.mycard .mycard-comments .comments-collapse-toggle {
+    padding: 0;
+    margin: 0 20px 12px 20px;
+}
+
+.mycard .mycard-comments .comments-collapse-toggle a,
+.mycard .mycard-comments .comments-collapse-toggle span {
+    padding-right: 5px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #999;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mycard-comments .media-heading {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.mycard.people {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+    height: 300px;
+    padding-top: 0;
+    margin-left: 20px;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.mycard.people:first-child {
+    margin-left: 0;
+}
+
+.mycard.people .mycard-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 100px;
+    height: 150px;
+    background-color: #ffffff;
+}
+
+.mycard.people .mycard-top.green {
+    background-color: #53a93f;
+}
+
+.mycard.people .mycard-top.blue {
+    background-color: #427fed;
+}
+
+.mycard.people .mycard-info {
+    position: absolute;
+    top: 150px;
+    display: inline-block;
+    width: 100%;
+    height: 101px;
+    overflow: hidden;
+    background: #ffffff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.mycard.people .mycard-info .title {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #404040;
+}
+
+.mycard.people .mycard-info .desc {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 16px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.mycard.people .mycard-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    line-height: 29px;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.mycard.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgba(214, 224, 226, 0.2);
+}
+
+.mycard.hovercard .mycardheader {
+    background: url("/images/card.jpg");
+    background-size: cover;
+    height: 135px;
+}
+
+.mycard.hovercard .avatar {
+    position: relative;
+    top: -50px;
+    margin-bottom: -50px;
+}
+
+.mycard.hovercard .avatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.5);
+}
+
+.mycard.hovercard .info {
+    padding: 4px 8px 10px;
+}
+
+.mycard.hovercard .info .title {
+    margin-bottom: 4px;
+    font-size: 24px;
+    line-height: 1;
+    color: #262626;
+    vertical-align: middle;
+}
+
+.mycard.hovercard .info .desc {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.mycard.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+
+.container1 {
+  width: 700px;
+}
+.row1 {
+  width: 700px;
+}
+.btn1 {
+  width: 100px;
+}
+#profiledp {
+  width: 500px;
+  height: 200px;
+}
+.all-contents {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  background-color: #e1bee7;
+  color: #004d40;
+  font-size: 18px;
+  font-family: 'Roboto-Bold';
+}
+hr {
+  border-top: 3px solid #069;
+}
+.card-content {
+  font-size: 16px;
+}
+.card-content .card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+.card-action a{
+  font-size: 12px;
+}
+.imageclass .card-content {
+  width: 500px;
+}
+.btn2{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
 
   </style>
 </head>
@@ -102,7 +386,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="/">Home</a></li>
         <li><a href="/chat">Chat Room</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="#">Post A Message</a></li>
@@ -151,7 +435,31 @@
       </tr>
     </thead>
     <tbody>
-    <tr><td><a id="home-tab" href="/home">Home</a></td></tr>
+    <tr>
+      <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container1">
+  <div class="row1">
+    <div class="col-lg-3 col-sm-6">
+
+            <div class="mycard hovercard">
+                <div class="mycardheader">
+
+                </div>
+                <div class="avatar">
+                    
+                </div>
+                <div class="info">
+                    <div class="title">
+                        <div id="name_put"></div>
+                    </div>
+                    <div class="desc" id="designation_put"></div>
+                    <div class="desc" id="station_put"></div>
+                    <div class="desc" id="email_put"></div>
+                </div>
+            </div>
+
+        </div>
+    <td><a id="home-tab" href="/home">Home</a></td></tr>
       <tr><td><a id="past-tab" href="/home?page=past">See Past Records</a></td></tr>
       <tr><td><a id="chart-tab" href="/home?page=chart">Organizational Chart</a></td></tr>
       <tr><td><a id="info-tab" href="/home?page=info">Police Stations Info</a></td></tr>
@@ -166,10 +474,37 @@
   </div>
 </div>
 
-<footer class="container-fluid footer-disc">
-  <p>Discalimer: This website is maintained and updated by Amingaon Police Station and associate developers. No police official is responsible for any mistakes or outdated data on the page.</p>
-</footer>
 
+<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Amingaon Police Station</h5>
+                <p class="grey-text text-lighten-4">This website is updated and maintained by officials of Amingaon Police Station.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2017 Copyright Amingaon Police Station
+            </div>
+          </div>
+        </footer>
+
+<!-- /////////////////////////////////////////// -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<!-- /////////////////////////////////////////////////// -->
 </body>
 </html>
 
@@ -177,5 +512,14 @@
   window.onload = function(){
        var pageVar = <%- JSON.stringify(pageToGet) %>;
        $( "div.all-contents" ).load("views/"+pageVar+".html");
+    var rowVar = <%- JSON.stringify(row) %>;
+var filenameFull = <%- JSON.stringify(filenameFull) %>;
+  console.log('<img alt="" src="images/profilePics/'+filenameFull+'">');
+    $( ".avatar" ).html('<img alt="" src="images/profilePics/'+filenameFull+'">');
+
+    $( "#name_put" ).html("<b>"+rowVar.name+"</b>");
+    $( "#email_put" ).html("<b>"+rowVar.email+"</b>");
+    $( "#designation_put" ).html("<b>"+rowVar.designation+"</b>");
+    $( "#station_put" ).html("<b>"+rowVar.station+"</b>");
  }
 </script>

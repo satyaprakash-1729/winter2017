@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
 var fs = require('fs');
+
 // var multer = require('multer');
 
 //  var Storage = multer.diskStorage({
@@ -22,8 +23,10 @@ var session = require('express-session');
 var async = require('async');
 
 var app = express();
+var http = require('http').Server(app)
+var io = require('socket.io')(http);
 
-var myIp = "192.168.1.4";
+var myIp = "192.168.1.5";
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -162,12 +165,17 @@ function getUserInfo(req, ip, callback1){
 
 function getImageFileName(req, row, callback){
        var dirn = 'images/profilePics/';
+       var done = false;
        fs.readdir(dirn, (err, files) => {
               files.forEach(file => {
                      if(file.match(new RegExp('^[0-9]*')) == row.userID){
                             req.session.imagefile = file;
+                            done = true;
                      }
               });
+              if(done==false){
+                req.session.imagefile = "0.png";
+              }
               callback();
        });
 }
@@ -176,9 +184,10 @@ function homeMaker(req, res){
        var ip = req.connection.remoteAddress;
        console.log(">>>>>>>>"+ip);
        var allowed = false;
-
+       var done = false;
        async.waterfall([
        function(next){
+        console.log(">>>>>111111111111111111111");
               // connection.connect();
            connection.query('SELECT * from Users, UserInfo WHERE Users.id=UserInfo.id;', function(err, rows, fields){
                // connection.end();
@@ -207,14 +216,20 @@ function homeMaker(req, res){
                }
            });
     }, function(res, allowed, row, callback){
+        console.log(">>>>>222222222222222222");
+
               if(allowed==true){
                             var dirn = 'images/profilePics/';
                             fs.readdir(dirn, (err, files) => {
                                    files.forEach(file => {
                                           if(file.match(new RegExp('^[0-9]*')) == row.userID){
-                                                 return res.render('index.html', {row: row, filenameFull: file});
+                                                res.render('index.html', {row: row, filenameFull: file});
+                                                done = true;
                                           }
                                    });
+                                   if(done==false){
+                                      return res.render('index.html', {row: row, filenameFull: "0.png"});
+                                   }
                             });
                             // res.render('index.html', {row: row, filenameFull: ""});
                   }else{
@@ -240,30 +255,71 @@ app.get('/images/:name', function(req, res){
     res.sendFile('images/'+req.params.name, {root: __dirname});
 });
 
+app.get('/bootstrap-3.3.7/dist/js/:name', function(req, res){
+    // res.send('images/'+req.params.name);
+    res.sendFile('bootstrap-3.3.7/dist/js/'+req.params.name, {root: __dirname});
+});
+
+app.get('/fonts/roboto/:name', function(req, res){
+    // res.send('images/'+req.params.name);
+    // console.log("ASDADDASDAS>>>>>>>>>>>>>>>>>>>>>>>>>>>   " + req.params.name);
+    res.sendFile('fonts/roboto/'+req.params.name, {root: __dirname});
+});
+
 app.get('/views/:name', function(req, res){
     // res.send('images/'+req.params.name);
     res.sendFile('views/'+req.params.name, {root: __dirname});
 });
 
-app.get('/home', function(req, res){
+app.get('/css/:name', function(req, res){
+    // res.send('images/'+req.params.name);
+    res.sendFile('css/'+req.params.name, {root: __dirname});
+});
+
+app.get('/js/:name', function(req, res){
+    // res.send('images/'+req.params.name);
+    res.sendFile('js/'+req.params.name, {root: __dirname});
+});
+
+app.get('/home*', function(req, res){
        // res.render('index.html');
        homeMaker(req, res);
 });
 
-app.get('/message', function(req, res){
+app.get('/message*', function(req, res){
        async.waterfall([
               function(callback){
+                // console.log("1111111111111");
                      if(!req.session.rowis)
                             getUserInfo(req, req.connection.remoteAddress, callback);
+                      else
+                        callback();
               },
               function(callback){
-                     if(!req.session.rowis)
+                // console.log("2222222222222222222");
+                     if(!req.session.rowis){
                             res.status(403).send("Not Authorized!");
+                            return res.end();
+                          }
                      if(!req.session.imagefile)
                             getImageFileName(req, req.session.rowis, callback);
+                          else
+                            callback();
               },
               function(callback){
-                     res.render('base.html', {pageToGet: 'message', row: req.session.rowis, filenameFull: req.session.imagefile});
+                connection.query('SELECT * from Users, UserInfo WHERE Users.id=UserInfo.id;', function(err, rows, fields){
+                   // connection.end();
+                   if(err){ 
+                       throw err;
+                   }else{
+                       req.session.allrows = rows;
+                       callback();
+                   }
+               });
+              },
+              function(callback){
+                // console.log("33333333333");
+                     res.render('base.html', {row: req.session.rowis, filenameFull: req.session.imagefile, allrows: req.session.allrows, pageToGet: 'message'});
                      callback(null, 'DONE!');
               }
        ], function(err, result){
@@ -271,20 +327,51 @@ app.get('/message', function(req, res){
        });
 });
 
-app.get('/chat', function(req, res){
+app.get('/chat*', function(req, res){
        async.waterfall([
               function(callback){
+                // console.log("1111111111111");
                      if(!req.session.rowis)
                             getUserInfo(req, req.connection.remoteAddress, callback);
+                      else
+                        callback();
               },
               function(callback){
-                     if(!req.session.rowis)
+                // console.log("2222222222222222222");
+                     if(!req.session.rowis){
                             res.status(403).send("Not Authorized!");
+                            return res.end();
+                          }
                      if(!req.session.imagefile)
                             getImageFileName(req, req.session.rowis, callback);
+                          else
+                            callback();
               },
               function(callback){
-                     res.render('base.html', {pageToGet: 'chat', row: req.session.rowis, filenameFull: req.session.imagefile});
+                connection.query('SELECT * from Users, UserInfo WHERE Users.id=UserInfo.id;', function(err, rows, fields){
+                   // connection.end();
+                   if(err){ 
+                       throw err;
+                   }else{
+                       req.session.allrows = rows;
+                       callback();
+                   }
+               });
+              },
+              function(callback){
+                connection.query('SELECT * from messages WHERE fromID="'+req.session.rowis.userID+'" OR toID="'+req.session.rowis.userID+'";', function(err, rows, fields){
+                   if(err){ 
+                       throw err;
+                   }else{
+                       req.session.allmessages = rows;
+                       callback();
+                   }
+               });
+              },
+              function(callback){
+                // console.log("33333333333");
+                    console.log("????????  >> " +JSON.stringify(req.session.allrows));
+                     res.render('chat.html', {row: req.session.rowis, filenameFull: req.session.imagefile, allrows: req.session.allrows, allmsgs: req.session.allmessages});
                      callback(null, 'DONE!');
               }
        ], function(err, result){
@@ -292,7 +379,7 @@ app.get('/chat', function(req, res){
        });
 });
 
-app.post('/picchange', function(req, res){
+app.post('/picchange*', function(req, res){
        if (!req.files){
               return res.status(400).send('No files were uploaded.');
        }
@@ -324,4 +411,43 @@ app.post('/picchange', function(req, res){
               });
 });
 
-app.listen(process.env.PORT || 3000, myIp);
+  io.on('connection', function(socket){
+    socket.on('chat message', function(msg){
+      var dateToInsert = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      console.log(">>>>>ADASD   "+dateToInsert);
+      // console.log(">>>>>>>TEST "+new Date().toUTCString());
+      // dateSQLToJS(dateToInsert);
+      var queryToRun = 'INSERT INTO messages (fromID, toID, message, timeOfMsg) VALUES ("'+msg.frominfo.userID+'", "'+msg.toinfo.userID+'", "'+msg.message+'", "'+dateToInsert+'");';
+      console.log("QUERY : "+queryToRun);
+      connection.query(queryToRun, function(err, rows, fields){
+           if(err){ 
+               throw err;
+           }else{
+                 console.log("INSERTED MESSAGE : " + msg.message);
+           }
+       });
+      io.emit('chat message', msg);
+    });
+  });
+
+  app.post('/getmsgdata', function(req, res){
+    console.log("GET MESSAGE DATA>>>>>>  "+req.session.rowis.userID);
+    var queryToRun = 'SELECT * from messages WHERE fromID="'+req.session.rowis.userID+'" OR toID="'+req.session.rowis.userID+'";';
+    console.log(">>  "+queryToRun);
+    connection.query(queryToRun, function(err, rows, fields){
+         if(err){ 
+             throw err;
+         }else{
+            console.log(JSON.stringify(rows));
+             res.send(JSON.stringify({rows: rows}));
+         }
+     });
+  });
+// app.listen(process.env.PORT || 3000, myIp);
+// server.listen(process.env.PORT || 3000, myIp);
+http.listen(7000,'127.0.0.1', function(){
+  console.log('listening on *:3000');
+  http.close(function(){
+    http.listen(3000, myIp);
+  });
+});

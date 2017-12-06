@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Project Winters</title>
+  <title>Police Station Intranet</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-      <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn">
-
+  
+      <!-- <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Vollkorn"> -->
   <style>
+  @font-face {
+      font-family: 'Roboto-Bold';
+      src: url('fonts/roboto/Roboto-Bold.woff2') format('woff2'), /* Super Modern Browsers */
+           url('fonts/roboto/Roboto-Bold.woff') format('woff'); /* Legacy iOS */
+    }
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
     }
-    
+    nav ul a {
+      font-size: 14px;
+    }
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 450px}
     
     /* Set gray background color and 100% height */
     .sidenav {
+        font-family: 'Roboto-Bold';
+        font-weight: bold;
+        font-size: 16px;
       padding-top: 20px;
-      background-color: #f1f1f1;
-      height: 100%;
+      background-color: #ffcdd2;
+      height: 700px;
+      overflow: auto;
     }
     
     /* Set black background color, white text and some padding */
@@ -69,27 +77,15 @@
       top: -7px;
     }
     #pic1 {
-      padding: 10px;
-      width: 400px;
+      max-height: 100%;
+      max-width: 100%;
     }
     #pic2 {
-      margin-left: 110px;
-      padding: 10px;
-      width: 420px;
-      height: 287px;
+      max-height: 100%;
+      max-width: 100%;
     }
 
-    footer {
-      position: fixed;
-      bottom: 0px;
-      right: 0px;
-      width: 83%;
-      height: 50px;
-      font-size: 80%;
-      text-align: right;
-    }
-
-.card {
+.mycard {
     padding-top: 20px;
     margin: 10px 0 20px 0;
     background-color: rgba(214, 224, 226, 0.2);
@@ -106,19 +102,19 @@
     box-sizing: border-box;
 }
 
-.card .card-heading {
+.mycard .mycard-heading {
     padding: 0 20px;
     margin: 0;
 }
 
-.card .card-heading.simple {
+.mycard .mycard-heading.simple {
     font-size: 20px;
     font-weight: 300;
     color: #777;
     border-bottom: 1px solid #e5e5e5;
 }
 
-.card .card-heading.image img {
+.mycard .mycard-heading.image img {
     display: inline-block;
     width: 46px;
     height: 46px;
@@ -130,57 +126,57 @@
     border-radius: 50%;
 }
 
-.card .card-heading.image .card-heading-header {
+.mycard .mycard-heading.image .mycard-heading-header {
     display: inline-block;
     vertical-align: top;
 }
 
-.card .card-heading.image .card-heading-header h3 {
+.mycard .mycard-heading.image .mycard-heading-header h3 {
     margin: 0;
     font-size: 14px;
     line-height: 16px;
     color: #262626;
 }
 
-.card .card-heading.image .card-heading-header span {
+.mycard .mycard-heading.image .mycard-heading-header span {
     font-size: 12px;
     color: #999999;
 }
 
-.card .card-body {
+.mycard .mycard-body {
     padding: 0 20px;
     margin-top: 20px;
 }
 
-.card .card-media {
+.mycard .mycard-media {
     padding: 0 20px;
     margin: 0 -14px;
 }
 
-.card .card-media img {
+.mycard .mycard-media img {
     max-width: 100%;
     max-height: 100%;
 }
 
-.card .card-actions {
+.mycard .mycard-actions {
     min-height: 30px;
     padding: 0 20px 20px 20px;
     margin: 20px 0 0 0;
 }
 
-.card .card-comments {
+.mycard .mycard-comments {
     padding: 20px;
     margin: 0;
     background-color: #f8f8f8;
 }
 
-.card .card-comments .comments-collapse-toggle {
+.mycard .mycard-comments .comments-collapse-toggle {
     padding: 0;
     margin: 0 20px 12px 20px;
 }
 
-.card .card-comments .comments-collapse-toggle a,
-.card .card-comments .comments-collapse-toggle span {
+.mycard .mycard-comments .comments-collapse-toggle a,
+.mycard .mycard-comments .comments-collapse-toggle span {
     padding-right: 5px;
     overflow: hidden;
     font-size: 12px;
@@ -189,12 +185,12 @@
     white-space: nowrap;
 }
 
-.card-comments .media-heading {
+.mycard-comments .media-heading {
     font-size: 13px;
     font-weight: bold;
 }
 
-.card.people {
+.mycard.people {
     position: relative;
     display: inline-block;
     width: 300px;
@@ -205,11 +201,11 @@
     vertical-align: top;
 }
 
-.card.people:first-child {
+.mycard.people:first-child {
     margin-left: 0;
 }
 
-.card.people .card-top {
+.mycard.people .mycard-top {
     position: absolute;
     top: 0;
     left: 0;
@@ -219,15 +215,15 @@
     background-color: #ffffff;
 }
 
-.card.people .card-top.green {
+.mycard.people .mycard-top.green {
     background-color: #53a93f;
 }
 
-.card.people .card-top.blue {
+.mycard.people .mycard-top.blue {
     background-color: #427fed;
 }
 
-.card.people .card-info {
+.mycard.people .mycard-info {
     position: absolute;
     top: 150px;
     display: inline-block;
@@ -240,7 +236,7 @@
     box-sizing: border-box;
 }
 
-.card.people .card-info .title {
+.mycard.people .mycard-info .title {
     display: block;
     margin: 8px 14px 0 14px;
     overflow: hidden;
@@ -250,7 +246,7 @@
     color: #404040;
 }
 
-.card.people .card-info .desc {
+.mycard.people .mycard-info .desc {
     display: block;
     margin: 8px 14px 0 14px;
     overflow: hidden;
@@ -260,7 +256,7 @@
     text-overflow: ellipsis;
 }
 
-.card.people .card-bottom {
+.mycard.people .mycard-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -274,7 +270,7 @@
     box-sizing: border-box;
 }
 
-.card.hovercard {
+.mycard.hovercard {
     position: relative;
     padding-top: 0;
     overflow: hidden;
@@ -282,19 +278,19 @@
     background-color: rgba(214, 224, 226, 0.2);
 }
 
-.card.hovercard .cardheader {
-    background: url("http://lorempixel.com/850/280/nature/4/");
+.mycard.hovercard .mycardheader {
+    background: url("/images/card.jpg");
     background-size: cover;
     height: 135px;
 }
 
-.card.hovercard .avatar {
+.mycard.hovercard .avatar {
     position: relative;
     top: -50px;
     margin-bottom: -50px;
 }
 
-.card.hovercard .avatar img {
+.mycard.hovercard .avatar img {
     width: 100px;
     height: 100px;
     max-width: 100px;
@@ -305,11 +301,11 @@
     border: 5px solid rgba(255,255,255,0.5);
 }
 
-.card.hovercard .info {
+.mycard.hovercard .info {
     padding: 4px 8px 10px;
 }
 
-.card.hovercard .info .title {
+.mycard.hovercard .info .title {
     margin-bottom: 4px;
     font-size: 24px;
     line-height: 1;
@@ -317,7 +313,7 @@
     vertical-align: middle;
 }
 
-.card.hovercard .info .desc {
+.mycard.hovercard .info .desc {
     overflow: hidden;
     font-size: 12px;
     line-height: 20px;
@@ -325,7 +321,7 @@
     text-overflow: ellipsis;
 }
 
-.card.hovercard .bottom {
+.mycard.hovercard .bottom {
     padding: 0 20px;
     margin-bottom: 17px;
 }
@@ -343,10 +339,34 @@
   width: 500px;
   height: 200px;
 }
-
+.all-contents {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  background-color: #e1bee7;
+  color: #004d40;
+  font-size: 18px;
+  font-family: 'Roboto-Bold';
+}
+hr {
+  border-top: 3px solid #069;
+}
+.card-content {
+  font-size: 16px;
+}
+.card-content .card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+.card-action a{
+  font-size: 12px;
+}
+.imageclass .card-content {
+  width: 500px;
+}
 .btn2{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
 
-  </style>
+  </style>  
 </head>
 <body>
 
@@ -362,7 +382,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="/">Home</a></li>
         <li><a href="/chat">Chat Room</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="/message">Post A Message</a></li>
@@ -421,8 +441,8 @@
   <div class="row1">
     <div class="col-lg-3 col-sm-6">
 
-            <div class="card hovercard">
-                <div class="cardheader">
+            <div class="mycard hovercard">
+                <div class="mycardheader">
 
                 </div>
                 <div class="avatar">
@@ -435,19 +455,6 @@
                     <div class="desc" id="designation_put"></div>
                     <div class="desc" id="station_put"></div>
                     <div class="desc" id="email_put"></div>
-                </div>
-                <div class="bottom">
-                    <a class="btn btn-primary btn-twitter btn-sm btn2" href="https://twitter.com/webmaniac">
-                        <i class="fa fa-twitter"></i>
-                    </a>
-                    <a class="btn btn-danger btn-sm btn2" rel="publisher"
-                       href="https://plus.google.com/+ahmshahnuralam">
-                        <i class="fa fa-google-plus"></i>
-                    </a>
-                    <a class="btn btn-primary btn-sm btn2" rel="publisher"
-                       href="https://plus.google.com/shahnuralam">
-                        <i class="fa fa-facebook"></i>
-                    </a>
                 </div>
             </div>
 
@@ -469,20 +476,57 @@
       <div class="all-contents"></div>
     </div>
     <div class="col-sm-2 sidenav">
-      <div class="well">
-        <p>NEWS 1</p>
-      </div>
-      <div class="well">
-        <p>NEWS 2</p>
-      </div>
+      <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">News 1</span>
+              <p>News 1 Contents</p>
+            </div>
+            <div class="card-action">
+              <a href="#">This is a link</a>
+            </div>
+          </div>
+      <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">News 1</span>
+              <p>News 1 Contents</p>
+            </div>
+            <div class="card-action">
+              <a href="#">This is a link</a>
+            </div>
+          </div>
     </div>
   </div>
 </div>
 
-<footer class="container-fluid footer-disc">
-  <p>Discalimer: This website is maintained and updated by Amingaon Police Station and associate developers. No police official is responsible for any mistakes or outdated data on the page.</p>
-</footer>
-
+<footer class="page-footer">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">Amingaon Police Station</h5>
+                <p class="grey-text text-lighten-4">This website is updated and maintained by officials of Amingaon Police Station.</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2017 Copyright Amingaon Police Station
+            </div>
+          </div>
+        </footer>
+<!-- ///////////////////////// -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<!-- //////////////////////////// -->
 </body>
 </html>
 
@@ -506,7 +550,7 @@ var filenameFull = <%- JSON.stringify(filenameFull) %>;
     $( "#station_put" ).html("<b>"+rowVar.station+"</b>");
     var vars = getUrlVars();
     if(!("page" in vars)){
-        $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'></div><div class='col-sm-4'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'></div>");
+        $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div>");
     }else{
         $( "div.all-contents" ).load("views/"+vars['page']+".html");
     }
@@ -521,7 +565,7 @@ var filenameFull = <%- JSON.stringify(filenameFull) %>;
     $( "div.all-contents" ).html("<h2>Past</h2>");
   });
   $( "#home-tab" ).click(function(){
-    $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'></div><div class='col-sm-4'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'></div>");
+    $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div>");
   });
   $( "#chart-tab" ).click(function(){
     $( "div.all-contents" ).html("<h2>Organizational Chart</h2>");
@@ -548,3 +592,4 @@ var filenameFull = <%- JSON.stringify(filenameFull) %>;
         $(this).stop(true, true).animate({fontSize: '14px', color: '#337ab7'}, 300);
     });
 </script>
+
