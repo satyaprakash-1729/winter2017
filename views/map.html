@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+    #map {
+       height: 100%;
+    }
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+      <script type="text/javascript">
+        var map;
+        // ini();
+        function ini()
+        {
+            var mapOptions =
+                {
+                   center: new google.maps.LatLng(26.1445, 91.7362),
+                   zoom: 12
+                }
+
+            map= new google.maps.Map(document.getElementById("map"), mapOptions);
+            var marker1 = new google.maps.Marker({
+              position: new google.maps.LatLng(26.159497, 91.696223),
+              map: map,
+              title: 'Jalukbari Police Station'
+            });
+            var marker2 = new google.maps.Marker({
+              position: new google.maps.LatLng(26.180905, 91.680226),
+              map: map,
+              title: 'Amingaon Police Station'
+            });
+            var marker3 = new google.maps.Marker({
+              position: new google.maps.LatLng(26.184791, 91.741058),
+              map: map,
+              title: 'PanBazar Police Station'
+            });
+            var marker4 = new google.maps.Marker({
+              position: new google.maps.LatLng(26.159437, 91.739421),
+              map: map,
+              title: 'Fatasil Ambari Police Station'
+            });
+        }
+      </script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAvaYb9DZusKwVeyKBbKlp7nYrRZk_eS4&callback=ini"
+    async defer></script>
+</body>
+</html>

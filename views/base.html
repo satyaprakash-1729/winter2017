@@ -329,7 +329,10 @@
     padding: 0 20px;
     margin-bottom: 17px;
 }
-
+#contactdoc {
+  width: 1000px;
+  height: 700px;
+}
 .container1 {
   width: 700px;
 }
@@ -389,8 +392,8 @@ hr {
         <li class="active"><a href="/">Home</a></li>
         <li><a href="/chat">Chat Room</a></li>
         <li><a href="#">About Us</a></li>
-        <li><a href="#">Post A Message</a></li>
-        <li><a href="#">Contact Us</a></li>
+        <li><a href="/message">Post A Message</a></li>
+        <li><a href="/contacts">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li> -->
@@ -460,7 +463,6 @@ hr {
 
         </div>
     <td><a id="home-tab" href="/home">Home</a></td></tr>
-      <tr><td><a id="past-tab" href="/home?page=past">See Past Records</a></td></tr>
       <tr><td><a id="chart-tab" href="/home?page=chart">Organizational Chart</a></td></tr>
       <tr><td><a id="info-tab" href="/home?page=info">Police Stations Info</a></td></tr>
       <tr><td><a id="missing-tab" href="/home?page=missing">Missing Persons Record</a></td></tr>
@@ -510,16 +512,20 @@ hr {
 
 <script type="text/javascript">
   window.onload = function(){
-       var pageVar = <%- JSON.stringify(pageToGet) %>;
-       $( "div.all-contents" ).load("views/"+pageVar+".html");
-    var rowVar = <%- JSON.stringify(row) %>;
-var filenameFull = <%- JSON.stringify(filenameFull) %>;
-  console.log('<img alt="" src="images/profilePics/'+filenameFull+'">');
-    $( ".avatar" ).html('<img alt="" src="images/profilePics/'+filenameFull+'">');
+      var rowVar = <%- JSON.stringify(row) %>;
+      var filenameFull = <%- JSON.stringify(filenameFull) %>;
+      console.log('<img alt="" src="images/profilePics/'+filenameFull+'">');
+      $( ".avatar" ).html('<img alt="" src="images/profilePics/'+filenameFull+'">');
 
-    $( "#name_put" ).html("<b>"+rowVar.name+"</b>");
-    $( "#email_put" ).html("<b>"+rowVar.email+"</b>");
-    $( "#designation_put" ).html("<b>"+rowVar.designation+"</b>");
-    $( "#station_put" ).html("<b>"+rowVar.station+"</b>");
+      $( "#name_put" ).html("<b>"+rowVar.name+"</b>");
+      $( "#email_put" ).html("<b>"+rowVar.email+"</b>");
+      $( "#designation_put" ).html("<b>"+rowVar.designation+"</b>");
+      $( "#station_put" ).html("<b>"+rowVar.station+"</b>");
+       var pageVar = <%- JSON.stringify(pageToGet) %>;
+       if(pageVar!="contact"){      
+             $( "div.all-contents" ).load("views/"+pageVar+".html");
+        }else{
+            $("div.all-contents").html("<embed src='/docs/contacts.pdf' id='contactdoc'>");
+        }
  }
 </script>

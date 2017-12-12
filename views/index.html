@@ -340,10 +340,11 @@
   height: 200px;
 }
 .all-contents {
+  display: inline-block;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 10px;
-  background-color: #e1bee7;
+  background-color: #cfd8dc;
   color: #004d40;
   font-size: 18px;
   font-family: 'Roboto-Bold';
@@ -364,6 +365,7 @@ hr {
 .imageclass .card-content {
   width: 500px;
 }
+
 .btn2{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
 
   </style>  
@@ -386,7 +388,7 @@ hr {
         <li><a href="/chat">Chat Room</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="/message">Post A Message</a></li>
-        <li><a href="#">Contact Us</a></li>
+        <li><a href="/contacts">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!-- <li><a href="#"><img src="images/edit.png" height="30px" width="30px" id="editpic">Edit Profile Pic</a></li> -->
@@ -421,8 +423,8 @@ hr {
   </div>
 </nav>
   
-<div class="container-fluid text-center">    
-  <div class="row content">
+<div class="container-fluid text-center" id="div13">    
+  <div class="row content" id="div12">
     <div class="col-sm-2 sidenav">
     <div class="table-responsive table-hover">
     <table class="table" id="sidebar">
@@ -464,7 +466,6 @@ hr {
 
     </tr>
     <tr><td><a id="home-tab" href="#">Home</a></td></tr>
-      <tr><td><a id="past-tab" href="#">See Past Records</a></td></tr>
       <tr><td><a id="chart-tab" href="#">Organizational Chart</a></td></tr>
       <tr><td><a id="info-tab" href="#">Police Stations Info</a></td></tr>
       <tr><td><a id="missing-tab" href="#">Missing Persons Record</a></td></tr>
@@ -472,7 +473,7 @@ hr {
       </table>
       </div>
     </div>
-    <div class="col-sm-8 text-left"> 
+    <div class="col-sm-8 text-left" id="div11"> 
       <div class="all-contents"></div>
     </div>
     <div class="col-sm-2 sidenav">
@@ -550,28 +551,19 @@ var filenameFull = <%- JSON.stringify(filenameFull) %>;
     $( "#station_put" ).html("<b>"+rowVar.station+"</b>");
     var vars = getUrlVars();
     if(!("page" in vars)){
-        $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div>");
+        $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic1' src='images/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic2' src='images/Police.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div>");
     }else{
         $( "div.all-contents" ).load("views/"+vars['page']+".html");
     }
   }
-  $( "#enq-tab" ).click(function(){
-    $( "div.all-contents" ).load("views/enquiry.html");
-  });
-  $( "#report-tab" ).click(function(){
-    $( "div.all-contents" ).load("views/reports.html");
-  });
-  $( "#past-tab" ).click(function(){
-    $( "div.all-contents" ).html("<h2>Past</h2>");
-  });
   $( "#home-tab" ).click(function(){
-    $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic1' src='https://timesofislamabad.com/wp-content/uploads/2017/06/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic2' src='https://blog.ipleaders.in/wp-content/uploads/2014/10/Police.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div>");
+    $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic1' src='images/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic2' src='images/Police.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div>");
   });
   $( "#chart-tab" ).click(function(){
     $( "div.all-contents" ).html("<h2>Organizational Chart</h2>");
   });
   $( "#info-tab" ).click(function(){
-    $( "div.all-contents" ).html("<h2>Police Station Info</h2>");
+    $( "div.all-contents" ).html('<iframe height="600px" width="800px" src="views/map.html" scrolling="no"/>');
   });
   $( "#complaints-tab" ).click(function(){
     $( "div.all-contents" ).html("<h2>Complaints</h2>");
@@ -591,5 +583,7 @@ var filenameFull = <%- JSON.stringify(filenameFull) %>;
     }, function(){
         $(this).stop(true, true).animate({fontSize: '14px', color: '#337ab7'}, 300);
     });
+  
 </script>
+
 

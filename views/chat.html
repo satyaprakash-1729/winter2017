@@ -341,13 +341,13 @@
         width: 1000px;
        }
        .heading-chat {
-        background-color: #0d47a1;
+        background-color: #9e9e9e;
         color: #003467;
         font-weight: bold;
         font-family: 'Teko';
        }
        .sidechatnav {
-        background-color: #1e88e5;
+        background-color: #424242;
         color: #ccffcc;
         height: 700px;
         font-size: 20px;
@@ -359,7 +359,7 @@
         color: #ccffcc;
        }
        .content-main {
-        background-color: #bbdefb;
+        background-color: #e0e0e0;
         height: 650px;
         overflow: auto;
        }
@@ -367,12 +367,13 @@
         margin-left: 10px;
         position: relative;
         left: -35px;
-        width: 750px;
+        width: 700px;
         display: inline;
         margin-right: 0px;
        }
        #sendmessage {
-        width: 60px;
+        padding: 5px;
+        width: 50px;
         margin-left: 0px;
         display: inline;
        }
@@ -387,7 +388,7 @@
             padding: 10px;
             display: inline-block;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 18px;
             font-family: 'Barlow Condensed';
             font-weight: bold;
             background-color: #fafafa;
@@ -399,7 +400,7 @@
             padding: 10px;
             display: inline-block;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 18px;
             font-family: 'Barlow Condensed';
             font-weight: bold;
             background-color: #fbe9e7;
@@ -408,6 +409,48 @@
        #table-head {
             text-align: center;
        }
+       .footer-copyright{
+            background-color: #b0bec5;
+       }
+       .page-footer {
+            background-color: #607d8b;
+       }
+
+       /*/////////////////////////////////////////*/
+       .fileupload {
+        margin-left: 10px;
+        margin-right: 10px;
+        display: inline-block;
+            width: 50px;
+            height: 36px;
+            -webkit-appearance: button;
+            touch-action: manipulation;
+            -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            border-color: #2e6da4;
+            position: relative;
+            overflow: hidden;
+            background: #337ab7;
+        }
+
+        .fileupload input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            opacity: 0.0;
+            filter: alpha(opacity=0);
+            font-size: 300px;
+            height: 200px;
+        }
+        .msger {
+            float: left;
+        }
+        .timeDisp {
+            color: #7e57c2;
+            font-size: 10px;
+        }
   </style>
 </head>
 <body>
@@ -428,10 +471,9 @@
         <li><a href="/chat">Chat Room</a></li>
         <li><a href="#">About Us</a></li>
         <li><a href="/message">Post A Message</a></li>
-        <li><a href="#">Contact Us</a></li>
+        <li><a href="/contacts">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li> -->
         <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="30px" width="30px" id="editpic">Change Profile Picture<span class="caret"></span></a>
                 <ul id="profiledp" class="dropdown-menu">
@@ -498,7 +540,6 @@
 
         </div>
     <td><a id="home-tab" href="/home">Home</a></td></tr>
-      <tr><td><a id="past-tab" href="/home?page=past">See Past Records</a></td></tr>
       <tr><td><a id="chart-tab" href="/home?page=chart">Organizational Chart</a></td></tr>
       <tr><td><a id="info-tab" href="/home?page=info">Police Stations Info</a></td></tr>
       <tr><td><a id="missing-tab" href="/home?page=missing">Missing Persons Record</a></td></tr>
@@ -520,7 +561,6 @@
                 </div>
                 <div class="row">
                     <ul id="past-msgs">
-                        
                     </ul>
                     </div>
             </div>
@@ -528,10 +568,12 @@
                     <form class="form-horizontal" id="msgform">
                         <div class="form-group">
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" id="message" name="message" placeholder="Enter Your Message">
-                          <!-- </div> -->
-                          <!-- <div class="col-sm-2"> -->
-                            <button type="submit" class="btn btn-primary" id="sendmessage" name="sendmessage">Send</button>
+                            <input type="text" class="form-control" autocomplete="false" id="message" name="message" placeholder="Enter Your Message">
+                            <button type="submit" class="btn btn-primary msger" id="sendmessage" name="sendmessage"><img src='images/send.png' height="30px" width="30px"></button>
+                            <div class="fileupload msger" id="uploader1">
+                                <input type="file" id="uploadimg" />
+                                <img src='images/imgupload.png' height="30px" width="30px">
+                            </div>
                           </div>
                         </div>
                     </form>
@@ -579,9 +621,19 @@
 <script type="text/javascript">
 var toRow = null;
 var ddate = null;
+var isimage = false;
+var imgformats = ["jpg", "jpeg", "png", "bmp", "gif", "tiff"];
+          var videoformats = ["ogv", "mp4", "wav", "avi", "mov", "mkv"];
+          var docformats = ["pdf", "txt", "dat"];
 var allrowVar = <%- JSON.stringify(allrows) %>;
 var rowVar = <%- JSON.stringify(row) %>;
 var msgVar = <%- JSON.stringify(allmsgs) %>;
+
+function updateScroll(){
+    var element = document.getElementsByClassName("content-main");
+    element[0].scrollTop = element[0].scrollHeight;
+}
+
 
 function getRowById(allrowVar, userid){
      for(var i=allrowVar.length-1; i>=0; i--){
@@ -593,7 +645,6 @@ function getRowById(allrowVar, userid){
 }
 
 function dateSQLToJS(datein){
-    // console.log(">>>>>>>>>>>>>>>>>>>>HERER");
     var tt = datein.split(/[- :]/);
     if(parseInt(tt[4])>=30){
         tt[3]=(parseInt(tt[3]) + 6) +"";
@@ -602,12 +653,26 @@ function dateSQLToJS(datein){
         tt[3]=(parseInt(tt[3])+5)+"";
         tt[4]=(parseInt(tt[4])+30)+"";
     }
-    // console.log("HER>>>>>>>> "+JSON.stringify(tt));
     ddate = new Date(Date.UTC(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]));
-    // console.log(">>> OUTDATE  "+ddate);
 }
 
-
+// //////////////////////////////////////////////////////////////////////////////////////////////////
+          function _arrayBufferToBase64( buffer ) {
+                var binary = '';
+                var bytes = new Uint8Array( buffer );
+                var len = bytes.byteLength;
+                for (var i = 0; i < len; i++) {
+                    binary += String.fromCharCode( bytes[ i ] );
+                }
+                return window.btoa( binary );
+            }
+            function extractExtension(filename){
+              var patt1 = /\.([0-9a-z]+)(?:[\?#]|$)/i;
+                   var extension1 = (filename).match(patt1);
+                   var extension = extension1[1];
+                   return extension;
+            }
+          ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createNewConversation(toRow1){
     $("#past-msgs").html("");
@@ -615,17 +680,92 @@ function createNewConversation(toRow1){
         if((msgVar[i].fromID == rowVar.userID && msgVar[i].toID == toRow1.userID)){
             dateSQLToJS((msgVar[i].timeOfMsg).replace('T', ' ').replace('Z', ''));
             var dateToPut = ddate.getDate() + "-"+(ddate.getMonth()+1)+"-"+ddate.getFullYear()+" "+ddate.getHours()+":"+ddate.getMinutes();
-            $('#past-msgs').append($('<div class="frommsgs">').text("("+dateToPut +") : "+ msgVar[i].message));
+            if(msgVar[i].isImg==0){
+                $('#past-msgs').append($('<div class="frommsgs">').html(msgVar[i].message+"<div class='timeDisp'>"+dateToPut +"</div>"));
                 $('#past-msgs').append('<br><br><br>');
+            }else{
+                var whatisit = "";
+                if(imgformats.indexOf(extractExtension(msgVar[i].imgname))>-1){
+                    whatisit = "image";
+                }else if(videoformats.indexOf(extractExtension(msgVar[i].imgname))>-1){
+                    whatisit = "video";
+                }else if(docformats.indexOf(extractExtension(msgVar[i].imgname))>-1){
+                    whatisit = "docs";
+                }else{
+                    whatisit = "file";
+                }
+                if(whatisit=="image"){
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><img src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'" class="imgmsg">'+ "<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                }else if(whatisit=="video"){
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><iframe src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'">'+ "<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                }else if(whatisit=="docs"){
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br>');
+                }else if(whatisit=="files"){
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br>');
+                }
+            }
         }else if((msgVar[i].toID == rowVar.userID && msgVar[i].fromID == toRow1.userID)){
             dateSQLToJS((msgVar[i].timeOfMsg).replace('T', ' ').replace('Z', ''));
             var dateToPut = ddate.getDate() + "-"+(ddate.getMonth()+1)+"-"+ddate.getFullYear()+" "+ddate.getHours()+":"+ddate.getMinutes();
-            $('#past-msgs').append($('<div class="tomsgs">').text("("+dateToPut +") : "+ msgVar[i].message));
+            if(msgVar[i].isImg==0){
+                $('#past-msgs').append($('<div class="tomsgs">').html(msgVar[i].message+"<div class='timeDisp'>"+dateToPut +"</div>"));
                 $('#past-msgs').append('<br><br><br>');
+            }else{
+                var whatisit = "";
+                if(imgformats.indexOf(extractExtension(msgVar[i].imgname))>-1){
+                    whatisit = "image";
+                }else if(videoformats.indexOf(extractExtension(msgVar[i].imgname))>-1){
+                    whatisit = "video";
+                }else if(docformats.indexOf(extractExtension(msgVar[i].imgname))>-1){
+                    whatisit = "docs";
+                }else{
+                    whatisit = "file";
+                }
+                if(whatisit=="image"){
+                    $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><img src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'" class="imgmsg"></a>'+ "<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                }else if(whatisit=="video"){
+                    $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><iframe src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'"></a>'+ "<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                }else if(whatisit=="docs"){
+                    $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"</a><div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br>');
+                }else if(whatisit=="files"){
+                    $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"</a><div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append('<br><br><br>');
+                }
+            }
         }
     }
+    $('.imgmsg').hover(function(){
+        $(this).css('z-index', '99');
+        expander(this);
+    }, function(){
+        $(this).css('z-index', '-1');
+        contracter(this);
+    });
+    updateScroll();
 }
-
+function expander(object){
+    var maxw = object.naturalWidth;
+    var tow = maxw;
+    var toh = object.naturalHeight;
+    var initRatio = tow/toh;
+    if(maxw>700){
+        tow = 700;
+        toh = 700/initRatio;
+    }
+    object.height = toh;
+    object.width = tow;
+    }
+    function contracter(object){
+        object.height = 100;
+        object.width = 100;
+    }
 
      window.onload = function(){
         var filenameFull = <%- JSON.stringify(filenameFull) %>;
@@ -643,12 +783,9 @@ function createNewConversation(toRow1){
                 $('#people').append($('<tr>').html("<td id='td"+allrowVar[i].userID+"'><a href='#"+allrowVar[i].userID+"' onclick='toggle("+allrowVar[i].userID+")'>"+allrowVar[i].name+"</a></td>"));
             }
         }
-        // console.log(toInsert);
-        // $('#people').html(toInsert);
     }
     function toggle(userid){
         $("#message").removeAttr("disabled");
-        // console.log(">>  " + userid);
         if(toRow!=null){
             var previd = toRow.userID;
             $('#td'+previd).css("background-color", "#335577");
@@ -660,33 +797,101 @@ function createNewConversation(toRow1){
            type: "POST",
            url: "/getmsgdata",
            success: function(data){
-             // $(data).appendTo("#msgHistory");
-             // $("#msgHistory").html($(data));
              msgVar = (JSON.parse(data)).rows;
-             console.log(">>>>>>>>  "+JSON.stringify(data));
-             // $('.collapse').collapse('show');
            }
          });
-        createNewConversation(toRow);
+        if(toRow!=null)
+            createNewConversation(toRow);
     }
 
     $(function () {
           var socket = io();
           $('#msgform').submit(function(){
-            socket.emit('chat message', {message: $('#message').val(), toinfo: toRow, frominfo: rowVar, timeOfMsg:  (new Date()).getDate() + "-"+((new Date()).getMonth()+1)+"-"+(new Date()).getFullYear()+" "+(new Date()).getHours()+":"+(new Date()).getMinutes()});
-            $('#message').val('');
-            return false;
+            if(toRow!=null){
+                if(!isimage){
+                    socket.emit('chat message', {image: false, message: $('#message').val(), toinfo: toRow, frominfo: rowVar, timeOfMsg:  (new Date()).getDate() + "-"+((new Date()).getMonth()+1)+"-"+(new Date()).getFullYear()+" "+(new Date()).getHours()+":"+(new Date()).getMinutes()});
+                    $('#message').val('');
+                    return false;
+                }else{
+                    var reader = new FileReader();
+                      reader.onload = function() {
+                        var arrayBuffer = this.result;
+                          socket.emit('chat message', {image: true, buffer: arrayBuffer, dateToInsert: "", filename: document.getElementById('uploadimg').files[0].name, message: '', toinfo: toRow, frominfo: rowVar, timeOfMsg:  (new Date()).getDate() + "-"+((new Date()).getMonth()+1)+"-"+(new Date()).getFullYear()+" "+(new Date()).getHours()+":"+(new Date()).getMinutes()});
+                      }
+                      reader.readAsArrayBuffer(document.getElementById('uploadimg').files[0]);
+                    $('#message').val('');
+                    isimage = false;
+                    return false;
+                }
+            }
           });
+          
+          
           socket.on('chat message', function(msg){
-            if(msg.toinfo.userID == rowVar.userID){
-                $('#past-msgs').append($('<div class="tomsgs">').text("("+msg.timeOfMsg +") : "+ msg.message));
-                $('#past-msgs').append('<br><br><br>');
+            if(msg.image){
+                var whatisit = "";
+                if(imgformats.indexOf(extractExtension(msg.filename))>-1){
+                    whatisit = "image";
+                }else if(videoformats.indexOf(extractExtension(msg.filename))>-1){
+                    whatisit = "video";
+                }else if(docformats.indexOf(extractExtension(msg.filename))>-1){
+                    whatisit = "docs";
+                }else{
+                    whatisit = "file";
+                }
+                var storeFilename = msg.frominfo.userID+'_'+msg.toinfo.userID+'_'+(msg.dateToInsert).replace(' ','-')+'.'+extractExtension(msg.filename);
+                if(msg.frominfo.userID == rowVar.userID){
+                    if(whatisit == "image"){
+                        $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank"><img src="data:image/jpeg;base64, '+_arrayBufferToBase64(msg.buffer)+'" height="100px" width="100px" alt="'+msg.filename+'" class="imgmsg"></a>'+ "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                    }else if(whatisit=="video"){
+                        $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank"><iframe src="/images/tempfiles/'+storeFilename+'" height="100px" width="100px" alt="'+msg.filename+'"></a>'+ "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                    }else if(whatisit == "docs"){
+                        $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank">'+msg.filename+"</a><div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br>');
+                    }else if(whatisit == "file"){
+                        $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank">'+msg.filename+"</a><div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br>');
+                    }
+                }
+                if(msg.toinfo.userID == rowVar.userID){
+                    if(whatisit == "image"){
+                        $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank"><img src="data:image/jpeg;base64, '+_arrayBufferToBase64(msg.buffer)+'" height="100px" width="100px" alt="'+msg.filename+'" class="imgmsg"></a>'+ "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                    }else if(whatisit=="video"){
+                        $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank"><iframe src="/images/tempfiles/'+storeFilename+'" height="100px" width="100px" alt="'+msg.filename+'"></a>'+ "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br><br><br><br><br>');
+                    }else if(whatisit == "docs"){
+                        $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank">'+msg.filename+"</a><div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br>');
+                    }else if(whatisit == "file"){
+                        $('#past-msgs').append($('<div class="tomsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank">'+msg.filename+"</a><div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                        $('#past-msgs').append('<br><br><br>');
+                    }
+                }
             }
-            if(msg.frominfo.userID == rowVar.userID){
-                $('#past-msgs').append($('<div class="frommsgs">').text("("+msg.timeOfMsg +") : "+ msg.message));
-                $('#past-msgs').append('<br><br><br>');
+            else{ 
+                if(msg.toinfo.userID == rowVar.userID){
+                    $('#past-msgs').append($('<div class="tomsgs">').html(msg.message + "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                    $('#past-msgs').append('<br><br><br>');
+                }
+                if(msg.frominfo.userID == rowVar.userID){
+                    $('#past-msgs').append($('<div class="frommsgs">').html(msg.message + "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                    $('#past-msgs').append('<br><br><br>');
+                }
             }
+            $('.imgmsg').hover(function(){
+                $(this).css('z-index', '99');
+                expander(this);
+            }, function(){
+                $(this).css('z-index', '-1');
+                contracter(this);
+            });
+            updateScroll();
           });
         });
-
+    $('#uploader1').click(function(){
+        isimage = true;
+    });
 </script>

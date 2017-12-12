@@ -28,13 +28,20 @@
             float: left;
             width: 1100px;
         }
+        .error {
+          color: red;
+          margin-left: 20px;
+        }
+        #removallist {
+          margin-left: 60px;
+        }
     </style>
     </head>
     <body>
         <div class="panel panel-primary" id="whole">
         <div class="panel-heading">Administration Page</div>
         <div class="panel-body">
-            <div class="panel panel-info" id="welcome"><div class="panel-heading">Welcome, Satya Prakash. Choose a task or logout if you're done.</div></div>
+            <div class="panel panel-info" id="welcome"><div class="panel-heading">Welcome, Administrator. Choose a task or logout if you're done.</div></div>
             <form action="/logout" method="POST">
             <button type="submit" class="btn btn-info" id="logout">Logout</button>
             </form>
@@ -119,6 +126,7 @@
                   <div class="col-sm-10"> 
                     <input type="text" class="form-control" id="userID" name="userID" placeholder="Enter User's Id">
                   </div>
+                  <div class="error" id="iderr"></div>
                 </div>
 
                 <div class="form-group">
@@ -139,7 +147,7 @@
                   <label class="control-label col-sm-2" for="ipaddr">User's IP Address: </label>
                   <div class="col-sm-10"> 
                     <input type="text" class="form-control" id="ipaddr" name="ipaddr" placeholder="Enter User's IP Address">
-                  </div>
+                  </div><div class="error" id="iperr"></div>
                 </div>
 
                 <div class="form-group">
@@ -164,7 +172,25 @@
 
               </div>
               <div id="menu2" class="tab-pane fade">
-                <h3>Remove</h3>
+                <div class="panel panel-info">
+       <div class="panel-heading">Remove User . . .</div>
+       <div class="panel-body">
+              <form class="form-horizontal" action="/removeuser" method="POST">
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="user_name">Select User to Remove: </label><br><br>
+                  <div id="removallist"></div>
+                </div>
+
+                <!--  -->
+                <div class="form-group"> 
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary" id="adduser" name="adduser">Remove User</button>
+                  </div>
+                </div>
+
+              </form>
+              </div>
+       </div>
                 
               </div>
             </div>
@@ -179,3 +205,45 @@
                  <!-- /////////////////////////////////////////////// -->
     </body>
     </html>
+    <script type="text/javascript">
+      var usersVar = <%- JSON.stringify(users) %>;
+      window.onload = function(){
+        var userslist = <%- JSON.stringify(users) %>;
+        var toinsert = '';
+        for(var i=0; i<userslist.length; i++){
+          toinsert+='<div class="radio"><label><input type="radio" name="removallist1" value="'+userslist[i].id+'+'+userslist[i].userID+'">'+(i+1)+'. '+userslist[i].name+' ('+userslist[i].userID+')'+'</label></div>'
+        }
+        $('#removallist').html(toinsert);
+        console.log(toinsert);
+      }
+      $('#ipaddr').on('keydown', function(){
+        var text = $('#ipaddr').val() + (parseInt((String.fromCharCode(event.which)).charCodeAt(0))-96);
+        for(var i=0; i<usersVar.length;i++){
+            var iprow = usersVar[i];
+            // console.log("HHHH"+JSON.stringify(iprow));
+            if(iprow.ipAddr==text){
+              $('#iperr').html('<b>IP Address Already In Use</b>');
+              $("#adduser").attr("disabled", "disabled");
+              break;
+            }else{
+              $("#adduser").removeAttr("disabled");
+              $('#iperr').html('');
+            }
+          }
+      });
+      $('#userID').on('keydown', function(){
+        var text = $('#userID').val() + (parseInt((String.fromCharCode(event.which)).charCodeAt(0))-96);
+        for(var i=0; i<usersVar.length;i++){
+            var iprow = usersVar[i];
+            // console.log("HHHH"+JSON.stringify(iprow));
+            if(iprow.userID==text){
+              $('#iderr').html('<b>USER ID Already In Use</b>');
+              $("#adduser").attr("disabled", "disabled");
+              break;
+            }else{
+              $("#adduser").removeAttr("disabled");
+              $('#iderr').html('');
+            }
+          }
+      });
+    </script>

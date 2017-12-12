@@ -4,6 +4,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
 var fs = require('fs');
+var dl = require('delivery');
+var btoa = require('btoa');
 
 // var multer = require('multer');
 
@@ -21,12 +23,13 @@ var fs = require('fs');
 
 var session = require('express-session');
 var async = require('async');
+var SqlString = require('sqlstring');
 
 var app = express();
 var http = require('http').Server(app)
 var io = require('socket.io')(http);
 
-var myIp = "192.168.1.5";
+var myIp = "192.168.1.7";
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -44,7 +47,8 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'hamunaptra',
-    database: 'polproj100'
+    database: 'polproj100',
+    charset: 'utf8mb4'
 });
 var admin = {username: "mathayus1729", password: "PolProj@1729"};
 
@@ -97,6 +101,38 @@ app.post('/logout', function(req, res){
         });
 });
 
+app.post ('/removeuser', checkAdmin, function(req, res){
+  var selecteduser = req.body.removallist1;
+  var values = selecteduser.split('+');
+  // console.log("VALUE: ", values[0]+"-"+values[1]);
+  var id = values[0];
+  var userid = values[1];
+  connection.query("DELETE FROM Users WHERE id="+id+";", function(err, rows, fields){
+        if(err){
+               throw err;
+        }else{
+               console.log("Removed From Users");
+        }
+ });
+  connection.query("DELETE FROM UserInfo WHERE id="+id+";", function(err, rows, fields){
+        if(err){
+               throw err;
+        }else{
+               console.log("Removed From UserInfo");
+        }
+ });
+var removemsgquery = "DELETE FROM messages WHERE fromID="+userid+" OR toID="+userid+";";
+// console.log(">>>> "+removemsgquery);
+connection.query(removemsgquery, function(err, rows, fields){
+        if(err){
+               throw err;
+        }else{
+               console.log("Removed From messages");
+        }
+ });
+  res.redirect('/protected');
+});
+
 app.post('/adduser', checkAdmin, function(req, res){
        var username = req.body.user_name;
        var email = req.body.email;
@@ -140,7 +176,7 @@ function getUserInfo(req, ip, callback1){
                                                  allowed = true;
                                                  temp = rows[i];
                                                  // next(null, res, allowed);
-                                                 console.log("HERE>>>>>>");
+                                                 // console.log("HERE>>>>>>");
                                                  break;
                                                }
                                         }
@@ -150,7 +186,7 @@ function getUserInfo(req, ip, callback1){
                                  }
                              }
                              req.session.rowis = temp;
-                             console.log("HERE  "+temp);
+                             // console.log("HERE  "+temp);
                              callback();
                          });
               },
@@ -161,6 +197,13 @@ function getUserInfo(req, ip, callback1){
        ], function(err, result){
               console.log("RES::" + result);
        });
+}
+
+function extractExtension(filename){
+  var patt1 = /\.([0-9a-z]+)(?:[\?#]|$)/i;
+       var extension1 = (filename).match(patt1);
+       var extension = extension1[1];
+       return extension;
 }
 
 function getImageFileName(req, row, callback){
@@ -180,6 +223,16 @@ function getImageFileName(req, row, callback){
        });
 }
 
+function _arrayBufferToBase64( buffer ) {
+      var binary = '';
+      var bytes = new Uint8Array( buffer );
+      var len = bytes.byteLength;
+      for (var i = 0; i < len; i++) {
+          binary += String.fromCharCode( bytes[ i ] );
+      }
+      return btoa( binary );
+  }
+
 function homeMaker(req, res){
        var ip = req.connection.remoteAddress;
        console.log(">>>>>>>>"+ip);
@@ -187,7 +240,7 @@ function homeMaker(req, res){
        var done = false;
        async.waterfall([
        function(next){
-        console.log(">>>>>111111111111111111111");
+        // console.log(">>>>>111111111111111111111");
               // connection.connect();
            connection.query('SELECT * from Users, UserInfo WHERE Users.id=UserInfo.id;', function(err, rows, fields){
                // connection.end();
@@ -195,6 +248,9 @@ function homeMaker(req, res){
                if(err){ 
                    throw err;
                }else{
+                  if(rows.length==0){
+                        res.status(403).send("You Are Not Authorized To View This Page ! Please contact the administrator.");
+                  }
                      if(myIp != ip){
                           for (var i = rows.length - 1; i >= 0; i--) {
                             // console.log(rows[i]);
@@ -203,7 +259,7 @@ function homeMaker(req, res){
                                    allowed = true;
                                    temp = rows[i];
                                    // next(null, res, allowed);
-                                   console.log("HERE>>>>>>");
+                                   // console.log("HERE>>>>>>");
                                    break;
                                  }
                           }
@@ -216,7 +272,7 @@ function homeMaker(req, res){
                }
            });
     }, function(res, allowed, row, callback){
-        console.log(">>>>>222222222222222222");
+        // console.log(">>>>>222222222222222222");
 
               if(allowed==true){
                             var dirn = 'images/profilePics/';
@@ -248,6 +304,11 @@ app.get('/', function(req, res){
 app.get('/images/profilePics/:name', function(req, res){
     // res.send('images/'+req.params.name);
     res.sendFile('images/profilePics/'+req.params.name, {root: __dirname});
+});
+
+app.get('/images/tempfiles/:name', function(req, res){
+    // res.send('images/'+req.params.name);
+    res.sendFile('images/tempfiles/'+req.params.name, {root: __dirname});
 });
 
 app.get('/images/:name', function(req, res){
@@ -327,6 +388,47 @@ app.get('/message*', function(req, res){
        });
 });
 
+app.get('/contacts', function(req, res){
+    async.waterfall([
+              function(callback){
+                // console.log("1111111111111");
+                     if(!req.session.rowis)
+                            getUserInfo(req, req.connection.remoteAddress, callback);
+                      else
+                        callback();
+              },
+              function(callback){
+                // console.log("2222222222222222222");
+                     if(!req.session.rowis){
+                            res.status(403).send("Not Authorized!");
+                            return res.end();
+                          }
+                     if(!req.session.imagefile)
+                            getImageFileName(req, req.session.rowis, callback);
+                          else
+                            callback();
+              },
+              function(callback){
+                connection.query('SELECT * from Users, UserInfo WHERE Users.id=UserInfo.id;', function(err, rows, fields){
+                   // connection.end();
+                   if(err){ 
+                       throw err;
+                   }else{
+                       req.session.allrows = rows;
+                       callback();
+                   }
+               });
+              },
+              function(callback){
+                // console.log("33333333333");
+                     res.render('base.html', {row: req.session.rowis, filenameFull: req.session.imagefile, allrows: req.session.allrows, pageToGet: 'contact'});
+                     callback(null, 'DONE!');
+              }
+       ], function(err, result){
+              console.log("RES : "+result);
+       });
+});
+
 app.get('/chat*', function(req, res){
        async.waterfall([
               function(callback){
@@ -364,13 +466,14 @@ app.get('/chat*', function(req, res){
                        throw err;
                    }else{
                        req.session.allmessages = rows;
+                       
                        callback();
                    }
                });
               },
               function(callback){
                 // console.log("33333333333");
-                    console.log("????????  >> " +JSON.stringify(req.session.allrows));
+                    // console.log("????????  >> " +JSON.stringify(req.session.allrows));
                      res.render('chat.html', {row: req.session.rowis, filenameFull: req.session.imagefile, allrows: req.session.allrows, allmsgs: req.session.allmessages});
                      callback(null, 'DONE!');
               }
@@ -383,6 +486,7 @@ app.post('/picchange*', function(req, res){
        if (!req.files){
               return res.status(400).send('No files were uploaded.');
        }
+       // console.log(JSON.stringify(req.files)+"FILE!!!!!!!!!!!!  >> ");
        let sampleFile = req.files.profilePicUpload;
        var mime1 = sampleFile.mimetype;
        var re = new RegExp('image/(.*)');
@@ -411,38 +515,95 @@ app.post('/picchange*', function(req, res){
               });
 });
 
+app.post('/checkip', function(req, res){
+    connection.query('SELECT * from Users;', function(err, rows, fields){
+       if(err){ 
+           throw err;
+       }else{
+          res.send(JSON.stringify({iprows: rows}));
+       }
+   });
+});
+
+function removeQuotes(string){
+  var i=0;
+  var ans = "";
+  while(string[i]!="'"){
+    i++;
+  }
+  var j = string.length-1;
+  while(string[j]!="'"){
+    j--;
+  }
+  ans = string.substring(i+1,j);
+  return ans;
+}
+
   io.on('connection', function(socket){
     socket.on('chat message', function(msg){
-      var dateToInsert = new Date().toISOString().slice(0, 19).replace('T', ' ');
-      console.log(">>>>>ADASD   "+dateToInsert);
-      // console.log(">>>>>>>TEST "+new Date().toUTCString());
-      // dateSQLToJS(dateToInsert);
-      var queryToRun = 'INSERT INTO messages (fromID, toID, message, timeOfMsg) VALUES ("'+msg.frominfo.userID+'", "'+msg.toinfo.userID+'", "'+msg.message+'", "'+dateToInsert+'");';
-      console.log("QUERY : "+queryToRun);
-      connection.query(queryToRun, function(err, rows, fields){
-           if(err){ 
-               throw err;
-           }else{
-                 console.log("INSERTED MESSAGE : " + msg.message);
-           }
-       });
-      io.emit('chat message', msg);
+      if(msg.image){
+        var dateToInsert = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        msg.dateToInsert = dateToInsert;
+        var storeFilename = msg.frominfo.userID+'_'+msg.toinfo.userID+'_'+dateToInsert.replace(' ','-')+'.'+extractExtension(msg.filename);
+       // console.log("QQQQQQQQ>>>>>>>>  "+JSON.stringify(extension1[1]));
+             fs.writeFileSync(__dirname + '/images/tempfiles/' + storeFilename,msg.buffer, function(err){
+              if(err){
+                console.log("ERROR!!!!!!!!!!");
+              }
+             });
+          // console.log(">>>>>>>>>>>> 123  >> "+removeQuotes(SqlString.escape(msg.buffer)));
+            // var queryToRun = 'INSERT INTO messages (fromID, toID, timeOfMsg, isImg, img, imgname) VALUES ("'+msg.frominfo.userID+'", "'+msg.toinfo.userID+'", "'+dateToInsert+'", 1, "'+removeQuotes(SqlString.escape(msg.buffer))+'", "'+msg.filename+'");';
+            var queryToRun = "INSERT INTO messages SET ?";
+            var values = {
+              fromID: parseInt(msg.frominfo.userID),
+              toID: parseInt(msg.toinfo.userID),
+              timeOfMsg: dateToInsert,
+              isImg: 1,
+              img: storeFilename,
+              imgname: msg.filename
+            };
+            connection.query(queryToRun, values,function(err, da){
+                 if(err){ 
+                     throw err;
+                 }else{
+                       console.log("INSERTED IMAGE : " + msg.filename);
+                 }
+             });
+            io.emit('chat message', msg);
+      }else{
+            var dateToInsert = new Date().toISOString().slice(0, 19).replace('T', ' ');
+            // var queryToRun = 'INSERT INTO messages (fromID, toID, message, timeOfMsg, isImg) VALUES ("'+msg.frominfo.userID+'", "'+msg.toinfo.userID+'", "'+(SqlString.escape(msg.message)).substring(1,(SqlString.escape(msg.message)).length -1) +'", "'+dateToInsert+'", 0);';
+            var queryToRun = 'INSERT INTO messages (fromID, toID, message, timeOfMsg, isImg) VALUES ("'+msg.frominfo.userID+'", "'+msg.toinfo.userID+'", "'+removeQuotes(SqlString.escape(msg.message)) +'", "'+dateToInsert+'", 0);';
+            connection.query(queryToRun, function(err, rows, fields){
+                 if(err){ 
+                     throw err;
+                 }else{
+                       console.log("INSERTED MESSAGE : " + msg.message);
+                 }
+             });
+            io.emit('chat message', msg);
+          }
     });
   });
 
   app.post('/getmsgdata', function(req, res){
-    console.log("GET MESSAGE DATA>>>>>>  "+req.session.rowis.userID);
+    // console.log("GET MESSAGE DATA>>>>>>  "+req.session.rowis.userID);
     var queryToRun = 'SELECT * from messages WHERE fromID="'+req.session.rowis.userID+'" OR toID="'+req.session.rowis.userID+'";';
-    console.log(">>  "+queryToRun);
+    // console.log(">>  "+queryToRun);
     connection.query(queryToRun, function(err, rows, fields){
          if(err){ 
              throw err;
          }else{
-            console.log(JSON.stringify(rows));
+            // console.log(JSON.stringify(rows));
              res.send(JSON.stringify({rows: rows}));
          }
      });
   });
+
+app.get('/docs/:name', function(req, res){
+    res.sendFile('/docs/'+req.params.name, {root: __dirname});
+});
+
 // app.listen(process.env.PORT || 3000, myIp);
 // server.listen(process.env.PORT || 3000, myIp);
 http.listen(7000,'127.0.0.1', function(){
