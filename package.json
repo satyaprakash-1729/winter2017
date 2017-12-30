@@ -21,6 +21,11 @@
     "express-session": "^1.15.6",
     "multer": "^1.3.0",
     "mysql": "^2.15.0",
+    "node-cron": "^1.2.1",
+    "node-gcm": "^0.14.9",
+    "node-notifier": "^5.1.2",
+    "node-notify": "^1.0.0",
+    "pubsub-js": "^1.5.7",
     "socket.io": "^2.0.4",
     "sqlstring": "^2.3.0",
     "url": "^0.11.0"

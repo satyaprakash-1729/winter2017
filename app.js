@@ -7,6 +7,14 @@ var fs = require('fs');
 var dl = require('delivery');
 var btoa = require('btoa');
 
+// var path = require('path');
+// var notifier = require('node-notifier');
+var cron = require('node-cron');
+var gcm = require('node-gcm');
+// var PubSub = require('pubsub-js');
+// var token11 = PubSub.subscribe('TOPIC1', function(msg, data){
+//   console.log(">>>" + msg + "  " + data);
+// });
 // var multer = require('multer');
 
 //  var Storage = multer.diskStorage({
@@ -29,7 +37,7 @@ var app = express();
 var http = require('http').Server(app)
 var io = require('socket.io')(http);
 
-var myIp = "192.168.1.7";
+var myIp = "192.168.1.2";
 
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
@@ -52,6 +60,8 @@ var connection = mysql.createConnection({
 });
 var admin = {username: "mathayus1729", password: "PolProj@1729"};
 
+var notificationidlist = {};
+var onlineUsers = {};
 app.get('/admin', function(req, res){
     // console.log("SAFASFAS");
     res.render('admin.html', {message: ""});
@@ -199,11 +209,58 @@ function getUserInfo(req, ip, callback1){
        });
 }
 
+function getUserInfo2(ip, resultObj, callback1){
+       async.waterfall([
+              function(callback){
+                     connection.query('SELECT * from Users, UserInfo WHERE Users.id=UserInfo.id;', function(err, rows, fields){
+                             // connection.end();
+                             var temp = null;
+                             if(err){ 
+                                 throw err;
+                             }else{
+                                   if(myIp != ip){
+                                        for (var i = rows.length - 1; i >= 0; i--) {
+                                          // console.log(rows[i]);
+                                               if(rows[i].ipAddr == ip){
+                                                 // console.log(">>" + rows[i].ipAddr + "<  >" + ip + "<<");
+                                                 allowed = true;
+                                                 temp = rows[i];
+                                                 // next(null, res, allowed);
+                                                 // console.log("HERE>>>>>>");
+                                                 break;
+                                               }
+                                        }
+                                 }else{
+                                          temp = rows[0];
+                                          allowed = true;
+                                 }
+                             }
+                             resultObj.result = temp;
+                             // console.log("HERE  "+temp);
+                             callback();
+                         });
+              },
+              function(callback){
+                     callback(null, 'DONE@@');
+              }
+       ], function(err, result){
+              console.log("RES::" + result);
+              callback1();
+       });
+}
+
 function extractExtension(filename){
   var patt1 = /\.([0-9a-z]+)(?:[\?#]|$)/i;
        var extension1 = (filename).match(patt1);
        var extension = extension1[1];
        return extension;
+}
+
+function extractFilename(filename){
+  var extss = extractExtension(filename);
+        var re = new RegExp('^(.*).'+extss);
+       var ANSWER = filename.match(re);
+       return ANSWER[1];
 }
 
 function getImageFileName(req, row, callback){
@@ -474,7 +531,8 @@ app.get('/chat*', function(req, res){
               function(callback){
                 // console.log("33333333333");
                     // console.log("????????  >> " +JSON.stringify(req.session.allrows));
-                     res.render('chat.html', {row: req.session.rowis, filenameFull: req.session.imagefile, allrows: req.session.allrows, allmsgs: req.session.allmessages});
+                    console.log(">>>>>>>>  " + JSON.stringify(onlineUsers));
+                     res.render('chat.html', {row: req.session.rowis, filenameFull: req.session.imagefile, allrows: req.session.allrows, allmsgs: req.session.allmessages, usersonline: onlineUsers});
                      callback(null, 'DONE!');
               }
        ], function(err, result){
@@ -538,13 +596,75 @@ function removeQuotes(string){
   ans = string.substring(i+1,j);
   return ans;
 }
+function sendMessageNotification(messageToSend, fromIP, toIP){
+  var res = {'result': ''};
+  var info = {};
+  async.waterfall([
+              function(callback){
+                // console.log("1111111111111");
+                getUserInfo2(fromIP, res, callback);
+              },
+              function(callback){
+                // console.log("1111111111111");
+                frominfo = res.result;
+                getUserInfo2(toIP, res, callback);
+              },
+              function(callback){
+                  toinfo = res.result;
+                  if(notificationidlist[toinfo.ipAddr]){
+                        var sender = new gcm.Sender('AAAAdzAnxpE:APA91bEVxRxtQFRvz-GJ5QIT9ElWi6_SLaOOj112AcrN5AvA-kkHGfGkAtOV_-J1X9pcq0hyOQvgGPG6UVH5hVcu0cfIeoYOGxOtRZ1h196GgUybjdX7-tAfR8onTNA3Mn2dnfd4H7V8');
+                        var message = new gcm.Message({
+                            data: { message: messageToSend, fromname: frominfo.name}
+                        });
+                         
+                        // Specify which registration IDs to deliver the message to
+                        var regTokens = [notificationidlist[toinfo.ipAddr]];
+                         
+                        // Actually send the message
+                        sender.send(message, { registrationTokens: regTokens }, function (err, response) {
+                            if (err) console.error(err);
+                            else{ 
+                              console.log(">>RESPONSE > " + JSON.stringify(response));
+                              callback(null, 'DONE!');
+                            }
+                        });
+                  }else{
+                    callback(null, 'DONE!');
+                  }
+              }
+       ], function(err, result){
+              console.log("NOTIFICATION :"+result);
+       });
+
+}
+
+// cron.schedule('*/30 * * * * *', function(){
+//   // io.emit('notification', {message: "Hello", frominfo:{name: 'temp1', userID: 103}, toinfo:{name: 'temp2', userID: 101}, timeOfMsg: new Date()});
+//   io.on('connection', function(socket){
+//   console.log('a user connected');
+// });
+// });
 
   io.on('connection', function(socket){
+    var resultRow = {'result':''};
+    getUserInfo2(socket.handshake.address, resultRow, function(){
+      onlineUsers[''+resultRow.result.userID] = true;
+      io.emit('user online', {userid: resultRow.result.userID});
+    })
+    socket.on('disconnect', function(){
+      onlineUsers[''+resultRow.result.userID] = false;
+        io.emit('user offline', {userid: resultRow.result.userID});
+    });
+    socket.on('seen', function(msg){
+        io.emit('seen', msg);
+    });
     socket.on('chat message', function(msg){
       if(msg.image){
+         io.emit('message intranet', msg);
         var dateToInsert = new Date().toISOString().slice(0, 19).replace('T', ' ');
         msg.dateToInsert = dateToInsert;
-        var storeFilename = msg.frominfo.userID+'_'+msg.toinfo.userID+'_'+dateToInsert.replace(' ','-')+'.'+extractExtension(msg.filename);
+        // sendMessageNotification(msg.filename, msg.frominfo.ipAddr, msg.toinfo.ipAddr);
+        var storeFilename = extractFilename(msg.filename) + '_' + msg.frominfo.userID+'_'+msg.toinfo.userID+'_'+dateToInsert.replace(' ','-')+'.'+extractExtension(msg.filename);
        // console.log("QQQQQQQQ>>>>>>>>  "+JSON.stringify(extension1[1]));
              fs.writeFileSync(__dirname + '/images/tempfiles/' + storeFilename,msg.buffer, function(err){
               if(err){
@@ -571,6 +691,8 @@ function removeQuotes(string){
              });
             io.emit('chat message', msg);
       }else{
+        io.emit('message intranet', msg);//////////////////////////////////////////////////////////////////////////////////
+        sendMessageNotification(msg.message, msg.frominfo.ipAddr, msg.toinfo.ipAddr);
             var dateToInsert = new Date().toISOString().slice(0, 19).replace('T', ' ');
             // var queryToRun = 'INSERT INTO messages (fromID, toID, message, timeOfMsg, isImg) VALUES ("'+msg.frominfo.userID+'", "'+msg.toinfo.userID+'", "'+(SqlString.escape(msg.message)).substring(1,(SqlString.escape(msg.message)).length -1) +'", "'+dateToInsert+'", 0);';
             var queryToRun = 'INSERT INTO messages (fromID, toID, message, timeOfMsg, isImg) VALUES ("'+msg.frominfo.userID+'", "'+msg.toinfo.userID+'", "'+removeQuotes(SqlString.escape(msg.message)) +'", "'+dateToInsert+'", 0);';
@@ -587,27 +709,66 @@ function removeQuotes(string){
   });
 
   app.post('/getmsgdata', function(req, res){
+    console.log(">>>>>>>>>> REQUEST");
+    var fromRow = req.body.rowFrom;
+    var toRow = req.body.rowTo;
+    async.waterfall([
+       function(callback){
+                // console.log("1111111111111");
+                     if(!req.session.rowis)
+                            getUserInfo(req, req.connection.remoteAddress, callback);
+                      else
+                        callback();
+              },
+        function(callback){
+          var queryToRun = "UPDATE messages SET seen=1 WHERE toID='"+fromRow.userID+"';"
+          connection.query(queryToRun, function(err, rows, fields){
+               if(err){ 
+                   throw err;
+                   res.send("");
+               }else{
+                callback();
+                  // console.log(JSON.stringify(rows));
+               }
+           });
+        },
+        function(callback){
+          var queryToRun = 'SELECT * from messages WHERE fromID="'+req.session.rowis.userID+'" OR toID="'+req.session.rowis.userID+'";';
+          // console.log(">>  "+queryToRun);
+          connection.query(queryToRun, function(err, rows, fields){
+               if(err){ 
+                   throw err;
+                   res.send("");
+               }else{
+                  // console.log(JSON.stringify(rows));
+                   res.send(JSON.stringify({rows: rows}));
+                   callback(null, 'HOLA! RES');
+               }
+           });
+        }
+      ], function(err, result){
+              console.log("NOTIFICATION :"+result);
+       });
+    
     // console.log("GET MESSAGE DATA>>>>>>  "+req.session.rowis.userID);
-    var queryToRun = 'SELECT * from messages WHERE fromID="'+req.session.rowis.userID+'" OR toID="'+req.session.rowis.userID+'";';
-    // console.log(">>  "+queryToRun);
-    connection.query(queryToRun, function(err, rows, fields){
-         if(err){ 
-             throw err;
-         }else{
-            // console.log(JSON.stringify(rows));
-             res.send(JSON.stringify({rows: rows}));
-         }
-     });
+    
   });
 
 app.get('/docs/:name', function(req, res){
     res.sendFile('/docs/'+req.params.name, {root: __dirname});
 });
 
+app.post('/notificationid', function(req, res){
+        notificationidlist[req.body.ip] = req.body.id; 
+});
+
+app.post('/notificationid11', function(req, res){
+  console.log(">>>>>>  "  + JSON.stringify(req.body));
+});
 // app.listen(process.env.PORT || 3000, myIp);
 // server.listen(process.env.PORT || 3000, myIp);
 http.listen(7000,'127.0.0.1', function(){
-  console.log('listening on *:3000');
+  console.log('listening on '+myIp+':3000');
   http.close(function(){
     http.listen(3000, myIp);
   });

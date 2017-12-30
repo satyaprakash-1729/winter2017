@@ -19,19 +19,34 @@
       src: url('fonts/roboto/Roboto-Bold.woff2') format('woff2'), /* Super Modern Browsers */
            url('fonts/roboto/Roboto-Bold.woff') format('woff'); /* Legacy iOS */
     }
+    nav ul img {
+      margin-bottom: 15px;
+    }
+    nav ul a {
+      float: left;
+      font-size: 14px;
+    }
+    nav #textpic{
+      position: absolute;
+      bottom: 5px;
+      right: 50px;
+
+    }
     /* Remove the navbar's default margin-bottom and rounded borders */ 
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
     }
-    nav ul a {
-      font-size: 14px;
+    .iconsnav {
+        -webkit-filter: invert(1);
+      filter: invert(1);
     }
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 450px}
     
     /* Set gray background color and 100% height */
     .sidenav {
+      border-radius: 7px;
         font-family: 'Roboto-Bold';
         font-weight: bold;
         font-size: 16px;
@@ -347,6 +362,7 @@
   height: 200px;
 }
 .all-contents {
+  border-radius: 7px;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 10px;
@@ -371,6 +387,36 @@ hr {
 .imageclass .card-content {
   width: 500px;
 }
+#profilepicchange {
+  line-height: 20px;
+  font-size: 16px;
+}
+#profiledp label{
+  color: #4a148c;
+  font-size: 16px;
+}
+#profiledp input{
+  color: #4a148c;
+  margin-left: 20px;
+  font-size: 14px;
+}
+#profilePicUpload {
+  float: left;
+}
+#profiledp button {
+  margin-top: 20px;
+}
+.footer-copyright{
+            background-color: #b0bec5;
+       }
+       .page-footer {
+          border-radius: 7px;
+            background-color: #607d8b;
+       }
+#profiledp {
+  color: #4a148c;
+  background-color: #f3e5f5;
+}
 .btn2{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
 
   </style>
@@ -389,16 +435,17 @@ hr {
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="/chat">Chat Room</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="/message">Post A Message</a></li>
-        <li><a href="/contacts">Contact Us</a></li>
+        <li class="active"><img class="iconsnav" src="images/home.png" height="20px" width="20px"><a href="/">Home</a></li>
+        <li><img class="iconsnav" src="images/chat.png" height="20px" width="20px"><a href="/chat">Chat Room</a></li>
+        <li><img class="iconsnav" src="images/about.png" height="20px" width="20px"><a href="#">About Us</a></li>
+        <li><img class="iconsnav" src="images/message.png" height="20px" width="20px"><a href="/message">Post A Message</a></li>
+        <li><img class="iconsnav" src="images/contact.png" height="20px" width="20px"><a href="/contacts">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <!-- <li><a href="#"><img src="images/edit.png" height="30px" width="30px" id="editpic">Edit Profile Pic</a></li> -->
         <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li> -->
-        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="30px" width="30px" id="editpic">Change Profile Picture<span class="caret"></span></a>
+        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture" id="profilepicchange">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="20px" width="20px" id="editpic"><div id="textpic">Change Profile Picture</div><span class="caret"></span></a>
                 <ul id="profiledp" class="dropdown-menu">
                     <li>
                          <div class="row11 row">
@@ -429,7 +476,7 @@ hr {
   
 <div class="container-fluid text-center">    
   <div class="row content">
-    <div class="col-sm-2 sidenav">
+    <div class="col-sm-2 sidenav hoverable">
     <div class="table-responsive table-hover">
     <table class="table" id="sidebar">
     <thead>
@@ -471,13 +518,13 @@ hr {
       </div>
     </div>
     <div class="col-sm-10 text-left"> 
-      <div class="all-contents"></div>
+      <div class="all-contents hoverable"></div>
     </div>
   </div>
 </div>
 
 
-<footer class="page-footer">
+<footer class="page-footer hoverable">
           <div class="container">
             <div class="row">
               <div class="col l6 s12">
@@ -528,4 +575,16 @@ hr {
             $("div.all-contents").html("<embed src='/docs/contacts.pdf' id='contactdoc'>");
         }
  }
+ $(".navbar-brand").hover(function(){
+        // console.log("Hererererer");
+        $(this).animate({fontSize: '22px', color: '#006699'}, 200);
+    }, function(){
+        $(this).animate({fontSize: '18px', color: '#9d9d9d'}, 200);
+    });
+  $( "#sidebar a" ).hover(function(){
+        // console.log("Hererererer");
+        $(this).stop(true, true).animate({fontSize: '18px', color: '#006699'}, 300);
+    }, function(){
+        $(this).stop(true, true).animate({fontSize: '14px', color: '#337ab7'}, 300);
+    });
 </script>

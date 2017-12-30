@@ -20,19 +20,30 @@
       margin-bottom: 0;
       border-radius: 0;
     }
+    nav ul img {
+      margin-bottom: 15px;
+    }
     nav ul a {
+      float: left;
       font-size: 14px;
+    }
+    nav #textpic{
+      position: absolute;
+      bottom: 5px;
+      right: 50px;
+
     }
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
     .row.content {height: 450px}
     
     /* Set gray background color and 100% height */
     .sidenav {
+      border-radius: 7px;
         font-family: 'Roboto-Bold';
         font-weight: bold;
         font-size: 16px;
       padding-top: 20px;
-      background-color: #ffcdd2;
+      background-color: #fff8e1;
       height: 700px;
       overflow: auto;
     }
@@ -62,6 +73,10 @@
       filter: invert(1);
     }
 
+    .iconsnav {
+        -webkit-filter: invert(1);
+      filter: invert(1);
+    }
     #editpic {
       -webkit-filter: invert(1);
       filter: invert(1);
@@ -80,11 +95,20 @@
       max-height: 100%;
       max-width: 100%;
     }
+    #bla1 {
+      z-index: 99;
+      margin-bottom: 170px;
+    }
+    #bla2 {
+      margin-bottom: 80px;
+    }
+    #bla3 {
+      margin-bottom: 10px;
+    }
     #pic2 {
       max-height: 100%;
       max-width: 100%;
     }
-
 .mycard {
     padding-top: 20px;
     margin: 10px 0 20px 0;
@@ -340,11 +364,12 @@
   height: 200px;
 }
 .all-contents {
+  border-radius: 7px;
   display: inline-block;
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 10px;
-  background-color: #cfd8dc;
+  background-color: #dcedc8;
   color: #004d40;
   font-size: 18px;
   font-family: 'Roboto-Bold';
@@ -365,7 +390,36 @@ hr {
 .imageclass .card-content {
   width: 500px;
 }
-
+#profilepicchange {
+  line-height: 20px;
+  font-size: 16px;
+}
+#profiledp label{
+  color: #4a148c;
+  font-size: 16px;
+}
+#profiledp input{
+  color: #4a148c;
+  margin-left: 20px;
+  font-size: 14px;
+}
+#profilePicUpload {
+  float: left;
+}
+#profiledp button {
+  margin-top: 20px;
+}
+#profiledp {
+  color: #4a148c;
+  background-color: #f3e5f5;
+}
+.footer-copyright{
+            background-color: #b0bec5;
+       }
+       .page-footer {
+          border-radius: 7px;
+            background-color: #607d8b;
+       }
 .btn2{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
 
   </style>  
@@ -384,17 +438,17 @@ hr {
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="/chat">Chat Room</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="/message">Post A Message</a></li>
-        <li><a href="/contacts">Contact Us</a></li>
+        <li class="active"><img class="iconsnav" src="images/home.png" height="20px" width="20px"><a href="/">Home</a></li>
+        <li><img class="iconsnav" src="images/chat.png" height="20px" width="20px"><a href="/chat">Chat Room</a></li>
+        <li><img class="iconsnav" src="images/about.png" height="20px" width="20px"><a href="#">About Us</a></li>
+        <li><img class="iconsnav" src="images/message.png" height="20px" width="20px"><a href="/message">Post A Message</a></li>
+        <li><img class="iconsnav" src="images/contact.png" height="20px" width="20px"><a href="/contacts">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <!-- <li><a href="#"><img src="images/edit.png" height="30px" width="30px" id="editpic">Edit Profile Pic</a></li> -->
         <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"></span>Login</a></li> -->
-        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="30px" width="30px" id="editpic">Change Profile Picture<span class="caret"></span></a>
+        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture" id="profilepicchange">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="20px" width="20px" id="editpic"><div id="textpic">Change Profile Picture</div><span class="caret"></span></a>
                 <ul id="profiledp" class="dropdown-menu">
                     <li>
                          <div class="row11 row">
@@ -422,10 +476,9 @@ hr {
     </div>
   </div>
 </nav>
-  
 <div class="container-fluid text-center" id="div13">    
   <div class="row content" id="div12">
-    <div class="col-sm-2 sidenav">
+    <div class="col-sm-2 sidenav hoverable">
     <div class="table-responsive table-hover">
     <table class="table" id="sidebar">
     <thead>
@@ -474,9 +527,9 @@ hr {
       </div>
     </div>
     <div class="col-sm-8 text-left" id="div11"> 
-      <div class="all-contents"></div>
+      <div class="all-contents hoverable"></div>
     </div>
-    <div class="col-sm-2 sidenav">
+    <div class="col-sm-2 sidenav hoverable">
       <div class="card blue-grey darken-1">
             <div class="card-content white-text">
               <span class="card-title">News 1</span>
@@ -532,6 +585,14 @@ hr {
 </html>
 
 <script type="text/javascript">
+$('.dropdown').click(function(){
+  $('.dropdown-menu').toggle();
+});
+
+$('#profilepicchange').hover(function(){},function(){
+  $('.dropdown-menu').hide();
+})
+
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -551,22 +612,19 @@ var filenameFull = <%- JSON.stringify(filenameFull) %>;
     $( "#station_put" ).html("<b>"+rowVar.station+"</b>");
     var vars = getUrlVars();
     if(!("page" in vars)){
-        $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic1' src='images/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div><div class='col-sm-6'><div class='card imgclass'><div class='card-image'><img id='pic2' src='images/Police.jpg'><span class='card-title'>Pic Title</span></div><div class='card-content'><p>Pic Description . . .</p></div></div></div>");
+        $( "div.all-contents" ).load("views/basicindex.html");
     }else{
         $( "div.all-contents" ).load("views/"+vars['page']+".html");
     }
   }
   $( "#home-tab" ).click(function(){
-    $( "div.all-contents" ).html("<h1>Welcome</h1><p>As a milestone in the journey of Amingaon Police Station comes the launch of this website which facilitates easy public use of many features which will allow us to better serve the people in need and help even those matters which would have otherwise remained unresolved. This website contains the information for contacting any of the junior and senior staff at any time and also allows people to make suggestions and complaints regarding our conduct. Along with these any one can now see any cases registered by them and the progress made in the same, with a feature to request someone's past records.</p><hr><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic1' src='images/Indian-Police-Serviceuppolice.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div><div class='col-sm-4'><div class='card'><div class='card-image'><img id='pic2' src='images/Police.jpg'><span class='card-title'>Card Title</span></div><div class='card-content'><p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p></div></div></div>");
+    $( "div.all-contents" ).load("views/basicindex.html");
   });
   $( "#chart-tab" ).click(function(){
     $( "div.all-contents" ).html("<h2>Organizational Chart</h2>");
   });
   $( "#info-tab" ).click(function(){
     $( "div.all-contents" ).html('<iframe height="600px" width="800px" src="views/map.html" scrolling="no"/>');
-  });
-  $( "#complaints-tab" ).click(function(){
-    $( "div.all-contents" ).html("<h2>Complaints</h2>");
   });
   $( "#missing-tab" ).click(function(){
     $( "div.all-contents" ).html("<h2>Missing Persons</h2>");
@@ -583,7 +641,6 @@ var filenameFull = <%- JSON.stringify(filenameFull) %>;
     }, function(){
         $(this).stop(true, true).animate({fontSize: '14px', color: '#337ab7'}, 300);
     });
-  
 </script>
 
 

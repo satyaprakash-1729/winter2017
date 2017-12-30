@@ -451,6 +451,47 @@
             color: #7e57c2;
             font-size: 10px;
         }
+        #profilepicchange {
+  line-height: 20px;
+  font-size: 16px;
+}
+#profiledp label{
+  color: #4a148c;
+  font-size: 16px;
+}
+#profiledp input{
+  color: #4a148c;
+  margin-left: 20px;
+  font-size: 14px;
+}
+#profilePicUpload {
+  float: left;
+}
+#profiledp button {
+  margin-top: 20px;
+}
+#profiledp {
+  color: #4a148c;
+  background-color: #f3e5f5;
+}
+.tick {
+  margin-left: 10px;
+  float: right;
+}
+.tick1 {
+  margin-left: 10px;
+  float: right;
+}
+
+.online_sign {
+  display: inline-block;
+}
+
+#people td{
+  width: 100%;
+  display: inline-block;
+}
+
   </style>
 </head>
 <body>
@@ -474,7 +515,7 @@
         <li><a href="/contacts">Contact Us</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture">
+        <li class="dropdown" data-toggle="tooltip" title="Set Profile Picture" id="profilepicchange">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/edit.png" height="30px" width="30px" id="editpic">Change Profile Picture<span class="caret"></span></a>
                 <ul id="profiledp" class="dropdown-menu">
                     <li>
@@ -571,7 +612,7 @@
                             <input type="text" class="form-control" autocomplete="false" id="message" name="message" placeholder="Enter Your Message">
                             <button type="submit" class="btn btn-primary msger" id="sendmessage" name="sendmessage"><img src='images/send.png' height="30px" width="30px"></button>
                             <div class="fileupload msger" id="uploader1">
-                                <input type="file" id="uploadimg" />
+                                <input type="file" id="uploadimg" multiple />
                                 <img src='images/imgupload.png' height="30px" width="30px">
                             </div>
                           </div>
@@ -621,6 +662,7 @@
 <script type="text/javascript">
 var toRow = null;
 var ddate = null;
+var allseen = false;
 var isimage = false;
 var imgformats = ["jpg", "jpeg", "png", "bmp", "gif", "tiff"];
           var videoformats = ["ogv", "mp4", "wav", "avi", "mov", "mkv"];
@@ -628,7 +670,7 @@ var imgformats = ["jpg", "jpeg", "png", "bmp", "gif", "tiff"];
 var allrowVar = <%- JSON.stringify(allrows) %>;
 var rowVar = <%- JSON.stringify(row) %>;
 var msgVar = <%- JSON.stringify(allmsgs) %>;
-
+var usersonline = <%- JSON.stringify(usersonline) %>
 function updateScroll(){
     var element = document.getElementsByClassName("content-main");
     element[0].scrollTop = element[0].scrollHeight;
@@ -672,16 +714,23 @@ function dateSQLToJS(datein){
                    var extension = extension1[1];
                    return extension;
             }
+            function extractFilename(filename){
+  var extss = extractExtension(filename);
+        var re = new RegExp('^(.*).'+extss);
+       var ANSWER = filename.match(re);
+       return ANSWER[1];
+}
           ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createNewConversation(toRow1){
     $("#past-msgs").html("");
+    var flag = 0;
     for(var i=0; i<msgVar.length; i++){
         if((msgVar[i].fromID == rowVar.userID && msgVar[i].toID == toRow1.userID)){
             dateSQLToJS((msgVar[i].timeOfMsg).replace('T', ' ').replace('Z', ''));
             var dateToPut = ddate.getDate() + "-"+(ddate.getMonth()+1)+"-"+ddate.getFullYear()+" "+ddate.getHours()+":"+ddate.getMinutes();
             if(msgVar[i].isImg==0){
-                $('#past-msgs').append($('<div class="frommsgs">').html(msgVar[i].message+"<div class='timeDisp'>"+dateToPut +"</div>"));
+                $('#past-msgs').append($('<div class="frommsgs">').html(msgVar[i].message+"<div class='timeDisp'>"+dateToPut +"<img class='tick' id='tick_"+i+"' src='' height=10 width=10></div>"));
                 $('#past-msgs').append('<br><br><br>');
             }else{
                 var whatisit = "";
@@ -695,16 +744,16 @@ function createNewConversation(toRow1){
                     whatisit = "file";
                 }
                 if(whatisit=="image"){
-                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><img src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'" class="imgmsg">'+ "<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><img src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'" class="imgmsg">'+ "<div class='timeDisp'>"+dateToPut +"<img class='tick' id='tick_"+i+"' src='' height=10 width=10></div>"));
                     $('#past-msgs').append('<br><br><br><br><br><br><br>');
                 }else if(whatisit=="video"){
-                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><iframe src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'">'+ "<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank"><iframe src="/images/tempfiles/'+msgVar[i].img+'" height="100px" width="100px" data-toggle="tooltip" title="'+msgVar[i].imgname+'">'+ "<div class='timeDisp'>"+dateToPut +"<img class='tick' id='tick_"+i+"' src='' height=10 width=10></div>"));
                     $('#past-msgs').append('<br><br><br><br><br><br><br>');
                 }else if(whatisit=="docs"){
-                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"<div class='timeDisp'>"+dateToPut +"<img class='tick' id='tick_"+i+"' src='' height=10 width=10></div>"));
                     $('#past-msgs').append('<br><br><br>');
                 }else if(whatisit=="files"){
-                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"<div class='timeDisp'>"+dateToPut +"</div>"));
+                    $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+msgVar[i].img+'" target="_blank">'+msgVar[i].imgname+"<div class='timeDisp'>"+dateToPut +"<img class='tick' id='tick_"+i+"' src='' height=10 width=10></div>"));
                     $('#past-msgs').append('<br><br><br>');
                 }
             }
@@ -740,6 +789,11 @@ function createNewConversation(toRow1){
                 }
             }
         }
+        if(msgVar[i].seen==1 && flag == 0){
+          $('#tick_'+i).attr("src", "/images/double-tick.png");
+        }else{
+          $('#tick_'+i).attr("src", "/images/tick.png");
+        }
     }
     $('.imgmsg').hover(function(){
         $(this).css('z-index', '99');
@@ -768,6 +822,7 @@ function expander(object){
     }
 
      window.onload = function(){
+        console.log(">>>>>>>  "+JSON.stringify(usersonline));
         var filenameFull = <%- JSON.stringify(filenameFull) %>;
         $( ".avatar" ).html('<img alt="" src="images/profilePics/'+filenameFull+'">');
 
@@ -780,7 +835,14 @@ function expander(object){
         var toInsert = "";
         for(var i=allrowVar.length-1; i>=0; i--){
             if(allrowVar[i].userID != rowVar.userID){
-                $('#people').append($('<tr>').html("<td id='td"+allrowVar[i].userID+"'><a href='#"+allrowVar[i].userID+"' onclick='toggle("+allrowVar[i].userID+")'>"+allrowVar[i].name+"</a></td>"));
+                $('#people').append($('<tr>').html("<td id='td"+allrowVar[i].userID+"'><a href='#"+allrowVar[i].userID+"' onclick='toggle("+allrowVar[i].userID+")'>"+allrowVar[i].name+"</a><div id=online_"+allrowVar[i].userID+"></div></td>"));
+            }
+        }
+        for(var key in usersonline){
+          console.log(">>> KEY "+key);
+          if(usersonline[key]==true){
+            console.log("THE HELL???");
+              $('#online_'+key).html('<img class="online_sign" src="/images/green_seen.png" height=20 width=20>');
             }
         }
     }
@@ -796,12 +858,15 @@ function expander(object){
         $.ajax({
            type: "POST",
            url: "/getmsgdata",
+           data: {rowFrom: rowVar, rowTo: toRow},
            success: function(data){
              msgVar = (JSON.parse(data)).rows;
            }
          });
         if(toRow!=null)
             createNewConversation(toRow);
+        var sock = io();
+        sock.emit('seen', {frominfo: rowVar, toinfo: toRow});
     }
 
     $(function () {
@@ -813,21 +878,57 @@ function expander(object){
                     $('#message').val('');
                     return false;
                 }else{
-                    var reader = new FileReader();
-                      reader.onload = function() {
-                        var arrayBuffer = this.result;
-                          socket.emit('chat message', {image: true, buffer: arrayBuffer, dateToInsert: "", filename: document.getElementById('uploadimg').files[0].name, message: '', toinfo: toRow, frominfo: rowVar, timeOfMsg:  (new Date()).getDate() + "-"+((new Date()).getMonth()+1)+"-"+(new Date()).getFullYear()+" "+(new Date()).getHours()+":"+(new Date()).getMinutes()});
-                      }
-                      reader.readAsArrayBuffer(document.getElementById('uploadimg').files[0]);
+                  console.log(">>>>>>>  "+document.getElementById('uploadimg').files.length);
+                  var j = document.getElementById('uploadimg').files.length;
+                  for (var i = document.getElementById('uploadimg').files.length - 1; i >= 0; i--) {
+                        var reader = new FileReader();
+                          reader.onload = function() {
+                            var arrayBuffer = this.result;
+                            j--;
+                              socket.emit('chat message', {image: true, buffer: arrayBuffer, dateToInsert: "", filename: document.getElementById('uploadimg').files[j].name, message: '', toinfo: toRow, frominfo: rowVar, timeOfMsg:  (new Date()).getDate() + "-"+((new Date()).getMonth()+1)+"-"+(new Date()).getFullYear()+" "+(new Date()).getHours()+":"+(new Date()).getMinutes()});
+                          }
+                          reader.readAsArrayBuffer(document.getElementById('uploadimg').files[i]);
+                        }
                     $('#message').val('');
                     isimage = false;
                     return false;
                 }
             }
+            toggle(toRow.userID);
           });
-          
-          
+          /////////////////////////////////////////////////////////////////
+//           var topic = 'TOPIC1',
+//     subscriber = function sayHello( data ){
+//         console.log( 'hello ' + data );
+//     };
+
+// // add a subscription 
+// $(document).bind(topic, subscriber);
+//////////////////////////////////////////////////////////////////////////////////
+          // socket.on('notification', function(msg){
+          //   if(msg.toinfo.userID == rowVar.userID){
+          //     var $toastContent = $('<span>'+msg.frominfo.name+': '+msg.message+'</span>').add($('<button class="btn-flat toast-action">Undo</button>'));
+          //     Materialize.toast($toastContent, 10000);
+          //   }
+          // });
+          socket.on('seen', function(msg){
+              if(msg.toinfo.userID == rowVar.userID){
+                $('.tick1').each(function(){
+                  $(this).attr('src', '/images/double-tick.png');
+                });
+              }
+          });
+          socket.on('user online', function(msg){
+            console.log("USER >> "+msg.userid);
+            $('#online_'+msg.userid).html('<img class="online_sign" src="/images/green_seen.png" height=20 width=20>');
+          });
+          socket.on('user offline', function(msg){
+            console.log("USER OFF>> "+msg.userid);
+            $('#online_'+msg.userid).html('');
+          });
           socket.on('chat message', function(msg){
+            console.log(msg.toinfo.userID + " ----- "+toRow.userID);
+            if(msg.frominfo.userID == toRow.userID || msg.frominfo.userID == rowVar.userID){
             if(msg.image){
                 var whatisit = "";
                 if(imgformats.indexOf(extractExtension(msg.filename))>-1){
@@ -839,7 +940,7 @@ function expander(object){
                 }else{
                     whatisit = "file";
                 }
-                var storeFilename = msg.frominfo.userID+'_'+msg.toinfo.userID+'_'+(msg.dateToInsert).replace(' ','-')+'.'+extractExtension(msg.filename);
+                var storeFilename = extractFilename(msg.filename) + '_' + msg.frominfo.userID+'_'+msg.toinfo.userID+'_'+(msg.dateToInsert).replace(' ','-')+'.'+extractExtension(msg.filename);
                 if(msg.frominfo.userID == rowVar.userID){
                     if(whatisit == "image"){
                         $('#past-msgs').append($('<div class="frommsgs">').html('<a href="/images/tempfiles/'+storeFilename+'" target="_blank"><img src="data:image/jpeg;base64, '+_arrayBufferToBase64(msg.buffer)+'" height="100px" width="100px" alt="'+msg.filename+'" class="imgmsg"></a>'+ "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
@@ -877,10 +978,11 @@ function expander(object){
                     $('#past-msgs').append('<br><br><br>');
                 }
                 if(msg.frominfo.userID == rowVar.userID){
-                    $('#past-msgs').append($('<div class="frommsgs">').html(msg.message + "<div class='timeDisp'>"+msg.timeOfMsg +"</div>"));
+                    $('#past-msgs').append($('<div class="frommsgs">').html(msg.message + "<div class='timeDisp'>"+msg.timeOfMsg +"<img class='tick1' src='/images/tick.png' height=10 width=10></div>"));
                     $('#past-msgs').append('<br><br><br>');
                 }
             }
+          }
             $('.imgmsg').hover(function(){
                 $(this).css('z-index', '99');
                 expander(this);
